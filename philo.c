@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   all.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,44 +12,35 @@
 
 # include "philo.h"
 
-void	philoeat(t_philo *philo)
+void	*philolife(t_philo *philo)
 {
-	gettimeofday(&philo->new_ph, NULL);
-	printf("%ld is eating\n", 
-	(philo->new_ph.tv_sec - philo->st_ph.tv_sec) * 1000 + 
-	(philo->new_ph.tv_usec - philo->st_ph.tv_usec)/1000);
+	int i = 0;
+	while (i < 5)
+	{
+		philoeat(philo);
+		philosleep(philo);
+		philothink(philo);
+		i++;
+	}
+	return ((void *)0);
 }
 
-void	philosleep(t_philo *philo)
+void	all(int argc, char **argv)
 {
-	gettimeofday(&philo->new_ph, NULL);
-	printf("%ld is sleeping\n", 
-	(philo->new_ph.tv_sec - philo->st_ph.tv_sec) * 1000 + 
-	(philo->new_ph.tv_usec - philo->st_ph.tv_usec)/1000);
-}
+	t_all all;
 
-void	philothink(t_philo *philo)
-{
-	gettimeofday(&philo->new_ph, NULL);
-	printf("%ld is thinking\n",
-	(philo->new_ph.tv_sec - philo->st_ph.tv_sec) * 1000 + 
-	(philo->new_ph.tv_usec - philo->st_ph.tv_usec)/1000); 
-}
-
-void	philolife(int argc, char **argv)
-{
-	t_philo philo;
-
-	(void)argc;
-	(void)argv;
-	gettimeofday(&philo.st_ph, NULL);
-	philoeat(&philo);
-	philosleep(&philo);
-	philothink(&philo);
+	if (initlife(argc, argv, &all) != EXIT_SUCCESS)
+		return ;
+	pthread_create(&all.philos.t, NULL, (void *)&philolife, &all.philos);
+	pthread_join(all.philos.t, NULL);
 }
 
 int	main(int argc, char **argv)
 {
-	//if (argc >= 5 && argc <= 6)
-		philolife(argc, argv);
+	if (argc < 5)
+		printf("Forgot arguments\n");
+	else if (argc >= 5 && argc <= 6)
+		all(argc, argv);
+	else
+		printf("Too many arguments\n");
 }

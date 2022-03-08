@@ -13,11 +13,13 @@
 CC := gcc
 FLAGS := -Wall -Wextra -Werror -g 
 INCLUDE_DIRS := includes \
+				life \
 				utils \
 				.
 INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := philo
 SRCS := philo.c \
+		life/life.c \
 		utils/utils.c
 OBJS := $(SRCS:.c=.o)
 
