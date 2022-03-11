@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 20:38:48 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/08 17:49:58 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/10 22:27:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@
 # include "utils.h"
 # include "life.h"
 
-int		initlife(int argc, char **argv, t_all *philo);
+void	philosophers(int argc, char **argv);
 
 #endif

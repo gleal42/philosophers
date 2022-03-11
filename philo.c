@@ -12,35 +12,31 @@
 
 # include "philo.h"
 
-void	*philolife(t_philo *philo)
-{
-	int i = 0;
-	while (i < 5)
-	{
-		philoeat(philo);
-		philosleep(philo);
-		philothink(philo);
-		i++;
-	}
-	return ((void *)0);
-}
-
-void	all(int argc, char **argv)
-{
-	t_all all;
-
-	if (initlife(argc, argv, &all) != EXIT_SUCCESS)
-		return ;
-	pthread_create(&all.philos.t, NULL, (void *)&philolife, &all.philos);
-	pthread_join(all.philos.t, NULL);
-}
-
 int	main(int argc, char **argv)
 {
 	if (argc < 5)
 		printf("Forgot arguments\n");
 	else if (argc >= 5 && argc <= 6)
-		all(argc, argv);
+		philosophers(argc, argv);
 	else
 		printf("Too many arguments\n");
+}
+
+void	philosophers(int argc, char **argv)
+{
+	t_all all;
+
+	if (initlife(argc, argv, &all) != EXIT_SUCCESS)
+		return ;
+	ft_memset(&all.philos.stat, '\0', sizeof(t_stats));
+	pthread_create(&all.philos.philo, NULL, (void *)&philolife, &all.philos);
+	while(1)
+	{
+		if (all.philos.stat.dead || (all.gen.eat_freq && all.philos.stat.ate == all.gen.eat_freq))
+		{
+			all.gen.endlife = 1;
+			break ;
+		}
+	}
+	pthread_join(all.philos.philo, NULL);
 }
