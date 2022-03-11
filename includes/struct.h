@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:58:26 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/11 01:28:20 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/11 19:09:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ typedef struct s_stats
 typedef struct s_gen
 {
 	struct timeval	tval;
-	double			stlife;
-	int				nbr;
+	double			tstlife;
+	double			tendlife;
+	int				philonbr;
 	int				t_die;
 	int				t_eat;
 	int				t_sleep;
@@ -37,19 +38,29 @@ typedef struct s_gen
 	int				endlife;
 }			t_gen;
 
+
+typedef struct s_fork
+{
+	pthread_mutex_t *fork;
+	int 			*using;
+}			t_fork;
+
 typedef struct s_philo
 {
 	t_gen const		*gen;
 	struct timeval	tval;
 	pthread_t		philo;
-	int				nbr;
 	t_stats			stat;
+	int				nbr;
+	t_fork			*left;
+	t_fork			*own;
+	t_fork			*right;
 }			t_philo;
 
 typedef struct s_all
 {
 	t_gen	gen;
-	t_philo	philos;
+	t_philo	*philos;
 }			t_all;
 
 #endif
