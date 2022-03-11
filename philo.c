@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   all.c                                            :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/07 20:31:43 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/07 21:09:07by gleal            ###   ########.fr       */
+/*   Created: 2022/03/11 01:23:07 by gleal             #+#    #+#             */
+/*   Updated: 2022/03/11 01:29:06 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo.h"
+#include "philo.h"
 
 int	main(int argc, char **argv)
 {
@@ -24,15 +24,16 @@ int	main(int argc, char **argv)
 
 void	philosophers(int argc, char **argv)
 {
-	t_all all;
+	t_all	all;
 
 	if (initlife(argc, argv, &all) != EXIT_SUCCESS)
 		return ;
 	ft_memset(&all.philos.stat, '\0', sizeof(t_stats));
 	pthread_create(&all.philos.philo, NULL, (void *)&philolife, &all.philos);
-	while(1)
+	while (1)
 	{
-		if (all.philos.stat.dead || (all.gen.eat_freq && all.philos.stat.ate == all.gen.eat_freq))
+		if (all.philos.stat.dead
+			|| (all.gen.eat_freq && all.philos.stat.ate == all.gen.eat_freq))
 		{
 			all.gen.endlife = 1;
 			break ;

@@ -6,13 +6,13 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:53:40 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/11 01:17:42 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/11 01:25:05 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "life.h"
+#include "life.h"
 
-int		initlife(int argc, char **argv, t_all *all)
+int	initlife(int argc, char **argv, t_all *all)
 {
 	all->gen.endlife = 0;
 	all->gen.stlife = calctime(&all->gen.tval);
@@ -48,22 +48,23 @@ void	*philolife(t_philo *philo)
 
 void	philoeat(t_philo *philo)
 {
-	int ate;
+	int	ate;
 
 	ate = 0;
 	philo->stat.lastmeal = calctime(&philo->tval) - philo->gen->stlife;
 	philo->stat.act = philo->stat.lastmeal;
-	printf("%ld is eating\n", (long)philo->stat.lastmeal); 
+	printf("%ld is eating\n", (long)philo->stat.lastmeal);
 	while (philo->stat.act < philo->stat.lastmeal + philo->gen->t_eat
 		&& philo->stat.act < philo->stat.lastmeal + philo->gen->t_die)
+	{
+		philo->stat.act = calctime(&philo->tval) - philo->gen->stlife;
+		if (philo->stat.act >= philo->stat.lastmeal
+			+ philo->gen->t_eat - 10 && !ate)
 		{
-			philo->stat.act = calctime(&philo->tval) - philo->gen->stlife;
-			if (philo->stat.act >= philo->stat.lastmeal + philo->gen->t_eat - 10 && !ate)
-			{
-				philo->stat.ate++;
-				ate++;
-			}
+			philo->stat.ate++;
+			ate++;
 		}
+	}
 	if (philo->stat.act >= philo->stat.lastmeal + philo->gen->t_die)
 	{
 		philo->stat.dead = 1;

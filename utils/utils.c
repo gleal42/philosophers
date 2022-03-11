@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/11 00:58:11 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/11 01:25:39 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	ft_atoi(const char *str)
 {
-	int sign;
-	int nbr;
+	int	sign;
+	int	nbr;
 
 	sign = 1;
 	while (*str == ' ' || (9 <= *str && *str <= 13))
