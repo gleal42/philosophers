@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 19:31:49 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 20:17:01 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/14 21:29:28 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,22 @@
 
 void	philopickforks(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->own.fork);
-	philo->own.using = 1;
+	pthread_mutex_lock(&philo->right);
 	philo->stat.act = calctime(&philo->tval) - philo->gen->tstlife;
 	if (!philo->gen->endlife)
 		printf("%s%ld %d has taken a fork\n%s", philo->clr,
 			(long)philo->stat.act, philo->nbr, RESET_COLOR);
 	if (philo->gen->philonbr == 1)
 		return (starve(philo));
-	while (1)
-	{
-		if (!philo->right->using)
-		{
-			pick_fork(philo, philo->right);
-			break ;
-		}
-		if (!philo->left->using)
-		{
-			pick_fork(philo, philo->left);
-			break ;
-		}
-	}
+	pthread_mutex_lock(philo->left);
+	philo->stat.act = calctime(&philo->tval) - philo->gen->tstlife;
+	if (!philo->gen->endlife)
+		printf("%s%ld %d has taken a fork\n%s", philo->clr,
+			(long)philo->stat.act, philo->nbr, RESET_COLOR);
+	if (!philo->gen->endlife)
+		philoeat(philo, &philo->right, philo->left);
+	else
+		leave_forks_on_the_table(&philo->right, philo->left);
 }
 
 void	starve(t_philo *philo)
@@ -44,32 +39,11 @@ void	starve(t_philo *philo)
 	philo->stat.dead = 1;
 	while (!philo->gen->endlife)
 		;
-	pthread_mutex_unlock(&philo->own.fork);
+	pthread_mutex_unlock(&philo->right);
 }
 
-void	pick_fork(t_philo *philo, t_fork *pickedfork)
+void	leave_forks_on_the_table(pthread_mutex_t *right, pthread_mutex_t *left)
 {
-	pickedfork->using = 1;
-	pthread_mutex_lock(&pickedfork->fork);
-	philo->stat.act = calctime(&philo->tval) - philo->gen->tstlife;
-	if (!philo->gen->endlife)
-		printf("%s%ld %d has taken a fork\n%s", philo->clr,
-			(long)philo->stat.act, philo->nbr, RESET_COLOR);
-	if (!philo->gen->endlife)
-		philoeat(philo, &philo->own, pickedfork);
-	else
-	{
-		pthread_mutex_unlock(&philo->own.fork);
-		pthread_mutex_unlock(&pickedfork->fork);
-		philo->own.using = 0;
-		pickedfork->using = 0;
-	}
-}
-
-void	leave_forks_on_the_table(t_fork *forkone, t_fork *forktwo)
-{
-	pthread_mutex_unlock(&forkone->fork);
-	pthread_mutex_unlock(&forktwo->fork);
-	forkone->using = 0;
-	forktwo->using = 0;
+	pthread_mutex_unlock(right);
+	pthread_mutex_unlock(left);
 }

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:16:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 20:17:35 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/14 21:28:26 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	*philolife(t_philo *philo)
 	return ((void *)0);
 }
 
-void	philoeat(t_philo *philo, t_fork *forkone, t_fork *forktwo)
+void	philoeat(t_philo *philo, pthread_mutex_t *right, pthread_mutex_t *left)
 {
 	philo->stat.lastmeal = calctime(&philo->tval) - philo->gen->tstlife;
 	philo->stat.act = philo->stat.lastmeal;
@@ -41,7 +41,7 @@ void	philoeat(t_philo *philo, t_fork *forkone, t_fork *forktwo)
 		while (!philo->gen->endlife)
 			;
 	}
-	leave_forks_on_the_table(forkone, forktwo);
+	leave_forks_on_the_table(right, left);
 }
 
 void	eating(t_philo *philo)

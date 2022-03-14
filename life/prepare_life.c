@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:31:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 18:58:36 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/14 21:32:39 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,13 @@ void	prepare_individuals(t_all	*all)
 		all->philos[i].nbr = i + 1;
 		ft_memset(&all->philos[i].stat, '\0', sizeof(t_stats));
 		all->philos[i].clr = set_color(i);
-		pthread_mutex_init(&all->philos[i].own.fork, NULL);
-		all->philos[i].own.using = 0;
-		all->philos[(i + 1) % all->gen.philonbr].left = &all->philos[i].own;
-		if (i == 0)
-			all->philos[all->gen.philonbr - 1].right = &all->philos[i].own;
-		else
-			all->philos[i - 1].right = &all->philos[i].own;
+		pthread_mutex_init(&all->philos[i].right, NULL);
+		all->philos[(i + 1) % all->gen.philonbr].left = &all->philos[i].right;
 		i++;
 	}
 }
 
-void	create_individuals(t_all *all)
+void	startsim_addphilos(t_all *all)
 {
 	int	i;
 
@@ -63,7 +58,7 @@ void	create_individuals(t_all *all)
 	{
 		pthread_create(&all->philos[i].philo, NULL,
 			(void *)&philolife, &all->philos[i]);
-		usleep(15);
+		usleep(18);
 		i++;
 	}
 }

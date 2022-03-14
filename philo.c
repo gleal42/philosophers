@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 01:23:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 18:35:07 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/14 21:31:27 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	philosophers(int argc, char **argv)
 	all.philos = malloc(sizeof(t_philo) * all.gen.philonbr);
 	all.gen.tstlife = calctime(&all.gen.tval);
 	prepare_individuals(&all);
-	create_individuals(&all);
+	startsim_addphilos(&all);
 	check_finish_sim(&all);
 	finish_sim(&all);
 }

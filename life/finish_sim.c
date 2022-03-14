@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:33:56 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 19:30:46 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/14 21:29:42 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	finish_sim(t_all *all)
 	i = 0;
 	while (i < all->gen.philonbr)
 	{
-		pthread_mutex_destroy(&all->philos[i].own.fork);
+		pthread_mutex_destroy(&all->philos[i].right);
 		i++;
 	}
 	free(all->philos);
