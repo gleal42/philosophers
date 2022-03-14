@@ -6,36 +6,83 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 18:20:46 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/13 19:57:27 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/14 18:21:48 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-char	*set_color(int	clr)
+char	*set_color(int clr)
 {
-	colors newcolor;
-	newcolor = clr % 11;
-	if (newcolor == red)
-		return (RED);
-	else if (newcolor == grn)
-		return (GRN);
-	else if (newcolor == blu)
-		return (BLU);
-	else if (newcolor == mag)
-		return (MAG);
-	else if (newcolor == cyn)
-		return (CYN);
-	else if (newcolor == lred)
+	t_colors	newcolor;
+
+	newcolor = clr % 4;
+	if (newcolor == lred)
 		return (LRED);
 	else if (newcolor == lgrn)
 		return (LGRN);
 	else if (newcolor == yel)
 		return (YEL);
-	else if (newcolor == lblu)
-		return (LBLU);
-	else if (newcolor == lmag)
-		return (LMAG);
 	else
-		return (LCYN);
+		return (LBLU);
+}
+
+int	is_input_integer(char **stack_a_args)
+{
+	int	i;
+
+	i = 0;
+	if (!stack_a_args[0])
+		return (0);
+	while (stack_a_args[i])
+	{
+		if (!is_integer(stack_a_args[i]))
+		{
+			ft_putstr_fd("Error: Input not numeric\n", 1);
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	is_integer(char *str)
+{
+	char	*strg;
+
+	if (!str || !(*str))
+		return (0);
+	strg = str;
+	if (*strg == '+' || *strg == '-')
+		strg++;
+	if (!is_all_digits(strg))
+		return (0);
+	if (!is_within_lims(strg))
+		return (0);
+	return (1);
+}
+
+int	is_all_digits(char *str)
+{
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
+int	is_within_lims(char *strg)
+{
+	long	nbr;
+
+	if (ft_strlen(strg) > 10)
+		return (0);
+	nbr = ft_atol(strg);
+	if (nbr > INT32_MAX)
+		return (0);
+	if (nbr < INT32_MIN)
+		return (0);
+	return (1);
 }

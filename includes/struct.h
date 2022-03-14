@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:58:26 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/13 18:17:57 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/14 18:16:21 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,10 @@ typedef struct s_gen
 	int				endlife;
 }			t_gen;
 
-
 typedef struct s_fork
 {
-	pthread_mutex_t fork;
-	int 			using;
+	pthread_mutex_t	fork;
+	int				using;
 }			t_fork;
 
 typedef struct s_philo
@@ -52,7 +51,7 @@ typedef struct s_philo
 	pthread_t		philo;
 	t_stats			stat;
 	int				nbr;
-	char 			*clr;
+	char			*clr;
 	t_fork			*left;
 	t_fork			own;
 	t_fork			*right;

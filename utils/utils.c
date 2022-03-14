@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/11 17:44:11 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/14 18:32:18 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,22 +63,4 @@ int	is_inbetween_time(double min, double val, double max)
 		return (1);
 	else
 		return (0);
-}
-
-int	initlife(int argc, char **argv, t_all *all)
-{
-	all->gen.endlife = 0;
-	all->gen.philonbr = ft_atoi(argv[1]);
-	all->gen.t_eat = ft_atoi(argv[3]);
-	all->gen.t_sleep = ft_atoi(argv[4]);
-	all->gen.t_die = ft_atoi(argv[2]);
-	if (argc == 6)
-	{
-		all->gen.eat_freq = ft_atoi(argv[5]);
-		if (all->gen.eat_freq == 0)
-			return (1);
-	}
-	else
-		all->gen.eat_freq = 0;
-	return (0);
 }
