@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 01:23:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/11 19:15:52 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/14 00:30:29 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,14 @@ void	philosophers(int argc, char **argv)
 		all.philos[i].gen = &all.gen;
 		all.philos[i].nbr = i + 1;
 		ft_memset(&all.philos[i].stat, '\0', sizeof(t_stats));
-		pthread_mutex_init(all.philos[i].own->fork, NULL);
-		*all.philos[i].own->using = 0;
-		all.philos[(i + 1)%all.gen.philonbr].left->fork = all.philos[i].own->fork;
+		all.philos[i].clr = set_color(i);	
+		pthread_mutex_init(&all.philos[i].own.fork, NULL);
+		all.philos[i].own.using = 0;
+		all.philos[(i + 1)%all.gen.philonbr].left = &all.philos[i].own;
 		if (i == 0)
-			all.philos[all.gen.philonbr].right->fork = all.philos[i].own->fork;
+			all.philos[all.gen.philonbr - 1].right = &all.philos[i].own;
 		else
-			all.philos[i - 1].right->fork = all.philos[i].own->fork;
+			all.philos[i - 1].right = &all.philos[i].own;
 		i++;
 	}
 	all.gen.tstlife = calctime(&all.gen.tval);
@@ -51,6 +52,7 @@ void	philosophers(int argc, char **argv)
 	while (i < all.gen.philonbr)
 	{
 		pthread_create(&all.philos[i].philo, NULL, (void *)&philolife, &all.philos[i]);
+		usleep(15);
 		i++;
 	}
 	while (1)
@@ -61,8 +63,9 @@ void	philosophers(int argc, char **argv)
 		{
 			if (all.philos[i].stat.dead)
 			{
-				all.gen.tendlife = calctime(&all.gen.tval) - all.gen.tstlife;
 				all.gen.endlife = 1;
+				usleep(1);
+				all.gen.tendlife = calctime(&all.gen.tval) - all.gen.tstlife;
 				printf("%ld %d died\n", (long)all.gen.tendlife, i + 1);
 				break ;
 			}
@@ -70,11 +73,10 @@ void	philosophers(int argc, char **argv)
 				min = all.philos[i].stat.ate;
 			i++;
 		}
-		if (all.philos[i].stat.dead || (all.gen.eat_freq && min >= all.gen.eat_freq))
-		{
+		if (all.gen.eat_freq && min >= all.gen.eat_freq)
 			all.gen.endlife = 1;
+		if (all.gen.endlife)
 			break ;
-		}
 	}
 	i = 0;
 	while (i < all.gen.philonbr)
@@ -85,7 +87,7 @@ void	philosophers(int argc, char **argv)
 	i = 0;
 	while (i < all.gen.philonbr)
 	{
-		pthread_mutex_destroy(all.philos[i].own->fork);
+		pthread_mutex_destroy(&all.philos[i].own.fork);
 		i++;
 	}
 	free(all.philos);

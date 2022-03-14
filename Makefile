@@ -20,7 +20,8 @@ INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := philo
 SRCS := philo.c \
 		life/life.c \
-		utils/utils.c
+		utils/utils.c \
+		utils/utils2.c
 OBJS := $(SRCS:.c=.o)
 
 all: $(NAME) 

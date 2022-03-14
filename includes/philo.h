@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 20:38:48 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/11 01:26:33 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/13 19:34:05 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include "colors.h"
 # include "struct.h"
 # include "utils.h"
 # include "life.h"
