@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:58:26 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 21:35:09 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/15 16:47:23 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,16 @@ typedef struct s_philo
 	char				*clr;
 	pthread_mutex_t		*left;
 	pthread_mutex_t		right;
+	pthread_mutex_t		*death;
+	pthread_mutex_t		*eat;
 }			t_philo;
 
 typedef struct s_all
 {
-	t_gen	gen;
-	t_philo	*philos;
+	t_gen			gen;
+	t_philo			*philos;
+	pthread_mutex_t	death;
+	pthread_mutex_t	eat;
 }			t_all;
 
 #endif

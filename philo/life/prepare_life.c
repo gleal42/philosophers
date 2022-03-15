@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:31:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 21:32:39 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/15 15:09:28 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	initlife(int argc, char **argv, t_all *all)
 	}
 	else
 		all->gen.eat_freq = 0;
+	pthread_mutex_init(&all->death, NULL);
+	pthread_mutex_init(&all->eat, NULL);
 	return (0);
 }
 
@@ -40,6 +42,8 @@ void	prepare_individuals(t_all	*all)
 	while (i < all->gen.philonbr)
 	{
 		all->philos[i].gen = &all->gen;
+		all->philos[i].death = &all->death;
+		all->philos[i].eat = &all->eat;
 		all->philos[i].nbr = i + 1;
 		ft_memset(&all->philos[i].stat, '\0', sizeof(t_stats));
 		all->philos[i].clr = set_color(i);

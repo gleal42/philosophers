@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC := gcc
-FLAGS := -Wall -Wextra -Werror -g 
+FLAGS := -Wall -Wextra -Werror -fsanitize=thread -g 
 INCLUDE_DIRS := includes \
 				life \
 				utils \
@@ -20,12 +20,14 @@ INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := philo
 SRCS := philo.c \
 		life/life.c \
+		life/eating.c \
 		life/prepare_life.c \
 		life/forks.c \
 		life/finish_sim.c \
 		utils/utils.c \
 		utils/utils2.c \
-		utils/utils3.c
+		utils/utils3.c \
+		utils/mutex_ops.c
 OBJS := $(SRCS:.c=.o)
 
 all: $(NAME) 

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:53:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 21:31:27 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/15 17:20:02 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 # include "philo.h"
 
 void	*philolife(t_philo *philo);
-void	philopickforks(t_philo *philo);
-void	philoeat(t_philo *philo, pthread_mutex_t *right, pthread_mutex_t *left);
 void	philosleep(t_philo *philo);
 void	philothink(t_philo *philo);
 
@@ -31,12 +29,19 @@ void	startsim_addphilos(t_all *all);
 
 void	check_finish_sim(t_all *all);
 void	checkdeathsetminate(t_all *all);
+int		check_dead_philo(t_all *all, int i);
 void	finish_sim(t_all *all);
 
 //forks.c
 
-void	starve(t_philo *philo);
+void	philopickforks(t_philo *philo);
+int		try_pick_first_fork(t_philo *philo);
+int		try_pick_second_fork(t_philo *philo);
+
+//eating.c
+
+void	philoeat(t_philo *philo, pthread_mutex_t *right, pthread_mutex_t *left);
+int		starve(t_philo *philo);
 void	eating(t_philo *philo);
-void	leave_forks_on_the_table(pthread_mutex_t *right, pthread_mutex_t *left);
 
 #endif

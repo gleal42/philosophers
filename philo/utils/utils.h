@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 18:57:53 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/15 17:17:08 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,12 @@ int		ft_strlen(char *str);
 long	ft_atol(const char *str);
 int		ft_isdigit(int c);
 void	ft_putstr_fd(char *str, int n);
+
+//mutex_ops.c
+
+void	leave_forks_on_the_table(pthread_mutex_t *right, pthread_mutex_t *left);
+int		is_dead(t_philo *philo);
+void	death_bed(t_philo *philo);
+void	rest_cutlery(t_philo *philo);
 
 #endif
