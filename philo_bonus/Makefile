@@ -22,7 +22,6 @@ SRCS := philo_bonus.c \
 		life_bonus/life_bonus.c \
 		life_bonus/prepare_life_bonus.c \
 		life_bonus/forks_bonus.c \
-		life_bonus/finish_sim_bonus.c \
 		utils_bonus/utils_bonus.c \
 		utils_bonus/utils2_bonus.c \
 		utils_bonus/utils3_bonus.c

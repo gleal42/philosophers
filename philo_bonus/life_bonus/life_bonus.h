@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:12:11 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/16 16:19:27 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/16 19:13:25 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 void	*philolife(t_philo *philo);
 void	philopickforks(t_philo *philo);
-void	philoeat(t_philo *philo, pthread_mutex_t *right, pthread_mutex_t *left);
+void	philoeat(t_philo *philo);
 void	philosleep(t_philo *philo);
 void	philothink(t_philo *philo);
 

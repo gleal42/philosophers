@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:10:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/15 14:15:38 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/16 16:38:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ typedef struct s_stats
 	double	lastsleep;
 	double	act;
 	double	lastmeal;
-	int		dead;
 	int		ate;
 }			t_stats;
 
@@ -35,7 +34,7 @@ typedef struct s_gen
 	int				t_eat;
 	int				t_sleep;
 	int				eat_freq;
-	int				endlife;
+	pthread_t		checker;
 }			t_gen;
 
 typedef struct s_philo

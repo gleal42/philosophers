@@ -53,3 +53,5 @@ dkms.conf
 
 # Other annoying
 .vscode
+.DS_Store
+philo_bonus/philo_bonus
