@@ -12,20 +12,20 @@
 
 CC := gcc
 FLAGS := -Wall -Wextra -Werror -g 
-INCLUDE_DIRS := includes \
-				life \
-				utils \
+INCLUDE_DIRS := includes_bonus \
+				life_bonus \
+				utils_bonus \
 				.
 INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := philo_bonus
 SRCS := philo_bonus.c \
-		life/life_bonus.c \
-		life/prepare_life_bonus.c \
-		life/forks_bonus.c \
-		life/finish_sim_bonus.c \
-		utils/utils_bonus.c \
-		utils/utils2_bonus.c \
-		utils/utils3_bonus.c
+		life_bonus/life_bonus.c \
+		life_bonus/prepare_life_bonus.c \
+		life_bonus/forks_bonus.c \
+		life_bonus/finish_sim_bonus.c \
+		utils_bonus/utils_bonus.c \
+		utils_bonus/utils2_bonus.c \
+		utils_bonus/utils3_bonus.c
 
 OBJS := $(SRCS:.c=.o)
 

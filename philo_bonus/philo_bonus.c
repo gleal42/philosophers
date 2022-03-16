@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 01:23:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 22:16:12 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/16 16:19:31 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,20 @@ int	main(int argc, char **argv)
 void	philosophers(int argc, char **argv)
 {
 	t_all	all;
+	int	i;
 
+	i = 0;
 	if (initlife(argc, argv, &all) != EXIT_SUCCESS)
 		return ;
-	all.philos = malloc(sizeof(t_philo) * all.gen.philonbr);
 	all.gen.tstlife = calctime(&all.gen.tval);
-	prepare_individuals(&all);
-	startsim_addphilos(&all);
+	all.philos.gen = &all.gen;
+	ft_memset(&all.philos.stat, '\0', sizeof(t_stats));
+	while (i < all.gen.philonbr)
+	{
+		all.philos.nbr = i + 1;
+		all.philos.clr = set_color(i);
+		i++;
+	}
 	check_finish_sim(&all);
 	finish_sim(&all);
 }

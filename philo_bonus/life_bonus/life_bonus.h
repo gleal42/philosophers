@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:12:11 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 22:13:03 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/16 16:19:27 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	philothink(t_philo *philo);
 
 int		initlife(int argc, char **argv, t_all *philo);
 void	prepare_individuals(t_all	*all);
-void	startsim_addphilos(t_all *all);
 
 //finish_sim.c
 
