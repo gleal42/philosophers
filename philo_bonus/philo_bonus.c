@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 01:23:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/16 19:15:56 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/18 19:07:31 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,56 +25,60 @@ int	main(int argc, char **argv)
 void	philosophers(int argc, char **argv)
 {
 	t_all	all;
-	pid_t	philos[201];
 	int i;
 	int	status;
 
 	status = 0;
-	ft_memset(philos, '\0', sizeof(i));
+	ft_memset(all.gen.philos, '\0', sizeof(all.gen.philos));
 	if (initlife(argc, argv, &all) != EXIT_SUCCESS)
 		return ;
 	all.gen.tstlife = calctime(&all.gen.tval);
-	all.philos.gen = &all.gen;
-	ft_memset(&all.philos.stat, '\0', sizeof(t_stats));
+	all.philo.gen = &all.gen;
+	ft_memset(&all.philo.stat, '\0', sizeof(t_stats));
 	i = 0;
-	//while (i < all.philos.gen->philonbr)
-	while (i < 2)
+	while (i < all.philo.gen->philonbr)
 	{
-		all.philos.nbr = i + 1;
-		all.philos.clr = set_color(i);
-		philos[i] = fork();
-		if (philos[i] == -1)
+		all.philo.nbr = i + 1;
+		all.philo.clr = set_color(i);
+		all.gen.philos[i] = fork();
+		if (all.gen.philos[i] == -1)
 		{
 			printf("There was an error creating philosopher process\n");
 			return ;
 		}
-		if (philos[i] == 0)
+		if (all.gen.philos[i] == 0)
 		{
-			pthread_create(&all.gen.checker, NULL, (void *)&philolife, &all.philos);
-			check_finish_sim(&all);
-			pthread_join(all.gen.checker, NULL);
-			return ;
+			philolife(&all.philo);
+			exit(EXIT_SUCCESS);
 		}
 		i++;
 	}
+	check_finish_sim(&all);
 	i = 0;
 	while (i < all.gen.philonbr)
 	{
-		waitpid(philos[i], &status, WNOHANG);
+		waitpid(all.gen.philos[i], &status, WNOHANG);
 		i++;
 	}
 }
 
 void	check_finish_sim(t_all *all)
 {
+	int	i;
+
+	i = 0;
 	while (1)
 	{
-		int	i;
-
-		i = 0;
-		all->gen.tendlife = calctime(&all->gen.tval) - all->gen.tstlife;
-		printf("%ld %d died\n", (long)all->gen.tendlife, i + 1);
-		kill(0, SIGINT);
-		i++;
+		if (all->philo.stat.ate >= 4)
+		{
+			while (i < all->gen.philonbr)
+			{
+				all->gen.tendlife = calctime(&all->gen.tval) - all->gen.tstlife;
+				printf("%ld %d died\n", (long)all->gen.tendlife, i + 1);
+				kill(all->gen.philos[i] , SIGTERM);
+				i++;
+			}
+			return ;
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:10:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/16 16:38:09 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/18 18:54:47 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_gen
 	int				t_eat;
 	int				t_sleep;
 	int				eat_freq;
-	pthread_t		checker;
+	pid_t			philos[201];
 }			t_gen;
 
 typedef struct s_philo
@@ -49,7 +49,7 @@ typedef struct s_philo
 typedef struct s_all
 {
 	t_gen	gen;
-	t_philo	philos;
+	t_philo	philo;
 }			t_all;
 
 #endif
