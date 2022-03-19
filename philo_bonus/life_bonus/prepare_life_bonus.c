@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:20:19 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/16 19:11:17 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/19 21:22:07 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,24 @@ int	initlife(int argc, char **argv, t_all *all)
 	}
 	else
 		all->gen.eat_freq = 0;
+	sem_unlink("satisfied");
+	all->philo.finished_eating = sem_open("satisfied", O_CREAT, 0660, 0);
+	if (all->philo.finished_eating == SEM_FAILED)
+	{
+		ft_putstr_fd("Error creating semaphore satisfied\n", 2);
+		sem_unlink("satisfied");
+		sem_close(all->philo.finished_eating);
+		return (1);
+	}
+	sem_unlink("simcontinue");
+	all->philo.simcontinue = sem_open("simcontinue", O_CREAT, 0660, 1);
+	if (all->philo.simcontinue == SEM_FAILED)
+	{
+		ft_putstr_fd("Error creating semaphore simcontinue\n", 2);
+		sem_unlink("simcontinue");
+		sem_close(all->philo.simcontinue);
+		return (1);
+	}
 	return (0);
 }
 

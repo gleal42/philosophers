@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 01:23:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/18 19:07:31 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/19 21:19:32 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,32 +53,39 @@ void	philosophers(int argc, char **argv)
 		}
 		i++;
 	}
-	check_finish_sim(&all);
-	i = 0;
-	while (i < all.gen.philonbr)
-	{
-		waitpid(all.gen.philos[i], &status, WNOHANG);
-		i++;
-	}
+	pthread_create(&all.philo.check_ate, NULL, (void *)check_ate, &all);
+	pthread_join(all.philo.check_ate, NULL);
+	//pthread_detach(all.philo.check_ate);
+	//pthread_exit(0);
+	exit(EXIT_SUCCESS);
 }
 
-void	check_finish_sim(t_all *all)
+void	*check_ate(t_all *all)
 {
 	int	i;
-
+	struct timeval	temp;
+	double final;
+	
 	i = 0;
-	while (1)
+	while (i < all->gen.philonbr)
 	{
-		if (all->philo.stat.ate >= 4)
-		{
-			while (i < all->gen.philonbr)
-			{
-				all->gen.tendlife = calctime(&all->gen.tval) - all->gen.tstlife;
-				printf("%ld %d died\n", (long)all->gen.tendlife, i + 1);
-				kill(all->gen.philos[i] , SIGTERM);
-				i++;
-			}
-			return ;
-		}
+		sem_wait(all->philo.finished_eating);
+		final = calctime(&temp) - all->gen.tstlife;
+		printf("%s %lu %d Philosophers are already done eating\n%s", RESET_COLOR, (long)final, i + 1, RESET_COLOR);
+		i++;
 	}
+	printf("%ld %d is satisfied\n", (long)all->gen.tendlife, all->philo.nbr);
+	i = 0;
+	while (i < all->gen.philonbr)
+	{
+		all->gen.tendlife = calctime(&all->gen.tval) - all->gen.tstlife;
+		kill(all->gen.philos[i] , SIGTERM);
+		i++;
+	}
+	sem_unlink("satisfied");
+	sem_close(all->philo.finished_eating);
+	sem_unlink("simcontinue");
+	sem_close(all->philo.simcontinue);
+	pthread_exit(0);
+	return ((void *)0);
 }

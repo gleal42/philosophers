@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:12:11 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/16 19:13:25 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/19 18:46:10 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	prepare_individuals(t_all	*all);
 
 //finish_sim.c
 
-void	check_finish_sim(t_all *all);
+void	*check_ate(t_all *all);
 void	checkdeathsetminate(t_all *all);
 void	finish_sim(t_all *all);
 

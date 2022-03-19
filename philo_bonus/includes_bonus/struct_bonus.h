@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:10:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/18 18:54:47 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/19 21:18:18 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,15 @@
 
 # include <sys/time.h>
 # include <pthread.h>
+# include <semaphore.h>
 
 typedef struct s_stats
 {
 	double	lastsleep;
 	double	act;
 	double	lastmeal;
+	int		finished_eating;
+	int		died;
 	int		ate;
 }			t_stats;
 
@@ -44,6 +47,10 @@ typedef struct s_philo
 	t_stats				stat;
 	int					nbr;
 	char				*clr;
+	pthread_t			check_death;
+	pthread_t			check_ate;
+	sem_t				*finished_eating;
+	sem_t				*simcontinue;
 }			t_philo;
 
 typedef struct s_all

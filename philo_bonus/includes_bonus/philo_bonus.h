@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:09:56 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/15 14:18:05 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/19 18:35:40 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <signal.h>
+# include <fcntl.h>
 # include "colors_bonus.h"
 # include "struct_bonus.h"
 # include "utils_bonus.h"
