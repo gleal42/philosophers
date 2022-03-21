@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/14 22:20:19 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/20 17:19:51by gleal            ###   ########.fr       */
+/*   Created: 2022/03/21 15:52:24 by gleal             #+#    #+#             */
+/*   Updated: 2022/03/21 17:08:58 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,47 +28,56 @@ int	initlife(int argc, char **argv, t_all *all)
 	}
 	else
 		all->gen.eat_freq = 0;
-	if (create_semaphore("satisfied", &all->philo.satisfied, 0) == EXIT_FAILURE)
-		return (1);
-	if (create_semaphore("forkpile", &all->philo.forkpile, all->gen.philonbr) == EXIT_FAILURE)
+	return (prepare_semaphores(all));
+}
+
+int	prepare_semaphores(t_all *all)
+{
+	int	i;
+
+	all->philo.sm.str[0] = "satisfied";
+	all->philo.sm.str[1] = "forkpile";
+	all->philo.sm.str[2] = "carefulprint";
+	all->philo.sm.str[3] = "finishsim";
+	all->philo.sm.sem_val[0] = 0;
+	all->philo.sm.sem_val[1] = all->gen.philonbr;
+	all->philo.sm.sem_val[2] = 1;
+	all->philo.sm.sem_val[3] = 0;
+	i = 0;
+	while (i < 4)
 	{
-		sem_unlink("satisfied");
-		sem_close(all->philo.satisfied);
-		return (1);
+		if (create_semaphore(all->philo.sm.str[i], &all->philo.sm.sms[i],
+				all->philo.sm.sem_val[i]) == SEM_FAILED)
+			return (error_semaphore(&all->philo.sm, i));
+		i++;
 	}
-	if (create_semaphore("carefulprint", &all->philo.carefulprinting, 1) == EXIT_FAILURE)
-	{
-		sem_unlink("satisfied");
-		sem_close(all->philo.satisfied);
-		sem_unlink("forkpiled");
-		sem_close(all->philo.forkpile);
-		return (1);
-	}
-	if (create_semaphore("finishsim", &all->philo.finishsim, 0) == EXIT_FAILURE)
-	{
-		sem_unlink("satisfied");
-		sem_close(all->philo.satisfied);
-		sem_unlink("forkpiled");
-		sem_close(all->philo.forkpile);
-		sem_unlink("carefulprint");
-		sem_close(all->philo.carefulprinting);
-		return (1);
-	}
+	all->philo.sm.satisfied = all->philo.sm.sms[0];
+	all->philo.sm.forkpile = all->philo.sm.sms[1];
+	all->philo.sm.carefulprinting = all->philo.sm.sms[2];
+	all->philo.sm.finishsim = all->philo.sm.sms[3];
 	return (0);
 }
 
-int create_semaphore(const char *str, sem_t **semph, int start_value)
+sem_t	*create_semaphore(const char *str, sem_t **semph, int start_value)
 {
 	sem_unlink(str);
 	*semph = sem_open(str, O_CREAT, 0660, start_value);
-	if (*semph == SEM_FAILED)
+	return (*semph);
+}
+
+int	error_semaphore(t_semphs *sm, int nbr)
+{
+	int	i;
+
+	ft_putstr_fd("Error creating semaphore ", 2);
+	ft_putstr_fd(sm->str[nbr], 2);
+	ft_putstr_fd("\n", 2);
+	i = 0;
+	while (i <= nbr)
 	{
-		ft_putstr_fd("Error creating semaphore ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd("\n", 2);
-		sem_unlink(str);
-		sem_close(*semph);
-		return (EXIT_FAILURE);
+		sem_unlink(sm->str[i]);
+		sem_close(sm->sms[i]);
+		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (EXIT_FAILURE);
 }

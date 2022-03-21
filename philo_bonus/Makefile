@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC := gcc
-FLAGS := -Wall -Wextra -Werror -g -pthread -fsanitize=thread
+FLAGS := -Wall -Wextra -Werror -g -pthread
 INCLUDE_DIRS := includes_bonus \
 				life_bonus \
 				utils_bonus \
@@ -20,11 +20,11 @@ INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := philo_bonus
 SRCS := philo_bonus.c \
 		life_bonus/life_bonus.c \
+		life_bonus/eating_bonus.c \
 		life_bonus/prepare_life_bonus.c \
 		utils_bonus/utils_bonus.c \
 		utils_bonus/utils2_bonus.c \
 		utils_bonus/utils3_bonus.c
-
 OBJS := $(SRCS:.c=.o)
 
 all: $(NAME)

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 01:44:31 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/21 17:10:04 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,12 @@ int	ft_atoi(const char *str)
 	return (nbr * sign);
 }
 
-double	calctime(struct timeval *time)
+double	calctime(void)
 {
-	gettimeofday(time, NULL);
-	return ((double)(time->tv_sec * 1000 + time->tv_usec / 1000));
-}
+	struct timeval	time;
 
-void	*ft_memset(void *b, int c, size_t len)
-{
-	unsigned char	*mem;
-	size_t			i;
-
-	mem = (unsigned char *)b;
-	i = 0;
-	while (i < len)
-	{
-		mem[i] = (unsigned char)c;
-		i++;
-	}
-	return (b);
+	gettimeofday(&time, NULL);
+	return ((double)(time.tv_sec * 1000 + time.tv_usec / 1000));
 }
 
 int	is_inbetween_time(double min, double val, double max)
@@ -67,14 +54,14 @@ int	is_inbetween_time(double min, double val, double max)
 
 void	careful_print(const char *str, t_philo *philo)
 {
-	sem_wait(philo->carefulprinting);
-	philo->act = calctime(&philo->tval) - philo->gen->tstlife;
+	sem_wait(philo->sm.carefulprinting);
+	philo->act = calctime() - philo->gen->tstlife;
 	printf(str, philo->clr, (long)philo->act, philo->nbr, RESET_COLOR);
-	sem_post(philo->carefulprinting);
+	sem_post(philo->sm.carefulprinting);
 }
 
 void	regular_print(const char *str, t_philo *philo)
 {
-	philo->act = calctime(&philo->tval) - philo->gen->tstlife;
+	philo->act = calctime() - philo->gen->tstlife;
 	printf(str, philo->clr, (long)philo->act, philo->nbr, RESET_COLOR);
 }
