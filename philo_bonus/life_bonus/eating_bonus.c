@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:05:01 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 17:50:41 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/21 19:44:35 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,19 +56,12 @@ int	eating(t_philo *philo)
 	while (philo->act <= philo->lastmeal + philo->gen->t_eat)
 	{
 		philo->act = calctime() - philo->gen->tstlife;
-		if (philo->act >= philo->lastmeal + philo->gen->t_eat)
-		{
-			philo->ate++;
-			if ((philo->gen->eat_freq && philo->ate == philo->gen->eat_freq))
-			{
-				sem_post(philo->sm.satisfied);
-				break ;
-			}
-			break ;
-		}
 		if (philo->act >= philo->lastmeal + philo->gen->t_die)
 			return (philokill(philo));
 	}
+	philo->ate++;
+	if ((philo->gen->eat_freq && philo->ate == philo->gen->eat_freq))
+		sem_post(philo->sm.satisfied);
 	sem_post(philo->sm.forkpile);
 	sem_post(philo->sm.forkpile);
 	return (0);

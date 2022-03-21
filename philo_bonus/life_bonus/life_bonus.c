@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:16:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 17:23:05 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/21 19:33:31 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	philothink(t_philo *philo)
 int	philokill(t_philo *philo)
 {
 	sem_wait(philo->sm.carefulprinting);
-	sem_post(philo->sm.finishsim);
 	regular_print("%s%ld %d died\n%s", philo);
+	sem_post(philo->sm.finishsim);
 	return (1);
 }
