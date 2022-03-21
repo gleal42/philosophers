@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 22:13:42 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/21 01:44:31 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,18 @@ int	is_inbetween_time(double min, double val, double max)
 		return (1);
 	else
 		return (0);
+}
+
+void	careful_print(const char *str, t_philo *philo)
+{
+	sem_wait(philo->carefulprinting);
+	philo->act = calctime(&philo->tval) - philo->gen->tstlife;
+	printf(str, philo->clr, (long)philo->act, philo->nbr, RESET_COLOR);
+	sem_post(philo->carefulprinting);
+}
+
+void	regular_print(const char *str, t_philo *philo)
+{
+	philo->act = calctime(&philo->tval) - philo->gen->tstlife;
+	printf(str, philo->clr, (long)philo->act, philo->nbr, RESET_COLOR);
 }

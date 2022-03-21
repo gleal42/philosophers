@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:20:19 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/19 21:22:07 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/20 17:19:51by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,47 @@ int	initlife(int argc, char **argv, t_all *all)
 	}
 	else
 		all->gen.eat_freq = 0;
-	sem_unlink("satisfied");
-	all->philo.finished_eating = sem_open("satisfied", O_CREAT, 0660, 0);
-	if (all->philo.finished_eating == SEM_FAILED)
+	if (create_semaphore("satisfied", &all->philo.satisfied, 0) == EXIT_FAILURE)
+		return (1);
+	if (create_semaphore("forkpile", &all->philo.forkpile, all->gen.philonbr) == EXIT_FAILURE)
 	{
-		ft_putstr_fd("Error creating semaphore satisfied\n", 2);
 		sem_unlink("satisfied");
-		sem_close(all->philo.finished_eating);
+		sem_close(all->philo.satisfied);
 		return (1);
 	}
-	sem_unlink("simcontinue");
-	all->philo.simcontinue = sem_open("simcontinue", O_CREAT, 0660, 1);
-	if (all->philo.simcontinue == SEM_FAILED)
+	if (create_semaphore("carefulprint", &all->philo.carefulprinting, 1) == EXIT_FAILURE)
 	{
-		ft_putstr_fd("Error creating semaphore simcontinue\n", 2);
-		sem_unlink("simcontinue");
-		sem_close(all->philo.simcontinue);
+		sem_unlink("satisfied");
+		sem_close(all->philo.satisfied);
+		sem_unlink("forkpiled");
+		sem_close(all->philo.forkpile);
+		return (1);
+	}
+	if (create_semaphore("finishsim", &all->philo.finishsim, 0) == EXIT_FAILURE)
+	{
+		sem_unlink("satisfied");
+		sem_close(all->philo.satisfied);
+		sem_unlink("forkpiled");
+		sem_close(all->philo.forkpile);
+		sem_unlink("carefulprint");
+		sem_close(all->philo.carefulprinting);
 		return (1);
 	}
 	return (0);
 }
 
+int create_semaphore(const char *str, sem_t **semph, int start_value)
+{
+	sem_unlink(str);
+	*semph = sem_open(str, O_CREAT, 0660, start_value);
+	if (*semph == SEM_FAILED)
+	{
+		ft_putstr_fd("Error creating semaphore ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("\n", 2);
+		sem_unlink(str);
+		sem_close(*semph);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
+}

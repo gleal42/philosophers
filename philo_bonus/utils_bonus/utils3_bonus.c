@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:14:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 22:14:50 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/20 17:25:19 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_isdigit(int c)
 		return (0);
 }
 
-void	ft_putstr_fd(char *str, int n)
+void	ft_putstr_fd(const char *str, int n)
 {
 	char	c;
 

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:10:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/19 21:18:18 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/21 01:43:03 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,6 @@
 # include <sys/time.h>
 # include <pthread.h>
 # include <semaphore.h>
-
-typedef struct s_stats
-{
-	double	lastsleep;
-	double	act;
-	double	lastmeal;
-	int		finished_eating;
-	int		died;
-	int		ate;
-}			t_stats;
 
 typedef struct s_gen
 {
@@ -37,26 +27,32 @@ typedef struct s_gen
 	int				t_eat;
 	int				t_sleep;
 	int				eat_freq;
-	pid_t			philos[201];
 }			t_gen;
 
 typedef struct s_philo
 {
 	t_gen const			*gen;
 	struct timeval		tval;
-	t_stats				stat;
 	int					nbr;
 	char				*clr;
-	pthread_t			check_death;
-	pthread_t			check_ate;
-	sem_t				*finished_eating;
-	sem_t				*simcontinue;
+	sem_t				*satisfied;
+	sem_t				*forkpile;
+	sem_t				*carefulprinting;
+	sem_t				*finishsim;
+	pid_t				proc[201];
+	double				lastsleep;
+	double				act;
+	double				lastmeal;
+	int		ate;
 }			t_philo;
 
 typedef struct s_all
 {
 	t_gen	gen;
 	t_philo	philo;
+	pthread_mutex_t finishtype;
+	pthread_t			check_ate;
+	int		starve;
 }			t_all;
 
 #endif

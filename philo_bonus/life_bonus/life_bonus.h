@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:12:11 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/19 18:46:10 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/21 01:00:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,18 @@
 
 # include "philo_bonus.h"
 
-void	*philolife(t_philo *philo);
-void	philopickforks(t_philo *philo);
-void	philoeat(t_philo *philo);
-void	philosleep(t_philo *philo);
-void	philothink(t_philo *philo);
+int		philolife(t_philo *philo);
+int		philopickforks(t_philo *philo);
+int		philoeat(t_philo *philo);
+int		philosleep(t_philo *philo);
+int		philothink(t_philo *philo);
+int philokill(t_philo *philo);
 
 //prepare_life.c
 
 int		initlife(int argc, char **argv, t_all *philo);
 void	prepare_individuals(t_all	*all);
+int		create_semaphore(const char *str, sem_t **semph, int start_value);
 
 //finish_sim.c
 
@@ -34,8 +36,8 @@ void	finish_sim(t_all *all);
 
 //forks.c
 
-void	starve(t_philo *philo);
-void	eating(t_philo *philo);
+int		starve(t_philo *philo);
+int		eating(t_philo *philo);
 void	leave_forks_on_the_table(pthread_mutex_t *right, pthread_mutex_t *left);
 
 #endif
