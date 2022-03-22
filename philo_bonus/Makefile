@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC := gcc
-FLAGS := -Wall -Wextra -Werror -g -pthread
+FLAGS := -Wall -Wextra -Werror -pthread
 INCLUDE_DIRS := includes_bonus \
 				life_bonus \
 				utils_bonus \
@@ -38,7 +38,6 @@ $(NAME) : $(OBJS)
 clean:
 	rm -f **/*.o
 	rm -f $(OBJS)
-	$(ps Aux | awk ' $11 == "./philo_bonus" {printf "%s ",$2}')
 
 fclean: clean
 		rm -f $(NAME)
