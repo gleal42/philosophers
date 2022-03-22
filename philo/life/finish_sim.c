@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:33:56 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/15 17:00:41 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/22 00:07:49 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void	checkdeathsetminate(t_all *all)
 	pthread_mutex_unlock(&all->eat);
 	while (i < all->gen.philonbr)
 	{
-		if (check_dead_philo(all, i))
-			return ;
 		pthread_mutex_lock(&all->eat);
 		if (all->philos[i].stat.ate < min)
 			min = all->philos[i].stat.ate;
@@ -51,38 +49,29 @@ void	checkdeathsetminate(t_all *all)
 	pthread_mutex_unlock(&all->eat);
 }
 
-int	check_dead_philo(t_all *all, int i)
+void	monitoreat(t_all *all)
 {
-	pthread_mutex_lock(&all->death);
-	if (all->philos[i].stat.dead)
-	{
-		all->gen.endlife = 1;
-		all->gen.tendlife = calctime(&all->gen.tval) - all->gen.tstlife;
-		printf("%ld %d died\n", (long)all->gen.tendlife, i + 1);
-		pthread_mutex_unlock(&all->death);
-		return (1);
-	}
-	pthread_mutex_unlock(&all->death);
-	return (0);
-}
+	int i;
 
-void	finish_sim(t_all *all)
-{
-	int	i;
-
-	i = 0;
-	while (i < all->gen.philonbr)
+	while (1)
 	{
-		pthread_join(all->philos[i].philo, NULL);
-		i++;
+		i = 0;
+		while (i < all->gen.philonbr)
+		{
+			pthread_mutex_lock(&all->eat);
+			printf("%f\n%f\n", all->philos[i].stat.lastmeal, all->gen.tstlife);
+			if (calctime() - all->gen.tstlife > all->philos[i].stat.lastmeal)
+			{
+				pthread_mutex_unlock(&all->eat);
+				pthread_mutex_lock(&all->death);
+				all->gen.endlife = 1;
+				all->gen.tendlife = calctime() - all->gen.tstlife;
+				printf("%ld %d died\n", (long)all->gen.tendlife, i + 1);
+				pthread_mutex_unlock(&all->death);
+				return ;
+			}
+			pthread_mutex_unlock(&all->eat);
+			i++;
+		}
 	}
-	i = 0;
-	while (i < all->gen.philonbr)
-	{
-		pthread_mutex_destroy(&all->philos[i].right);
-		i++;
-	}
-	pthread_mutex_destroy(&all->death);
-	pthread_mutex_destroy(&all->eat);
-	free(all->philos);
 }

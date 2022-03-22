@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 01:23:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/15 14:54:19 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/22 00:03:38 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,32 @@ void	philosophers(int argc, char **argv)
 	if (initlife(argc, argv, &all) != EXIT_SUCCESS)
 		return ;
 	all.philos = malloc(sizeof(t_philo) * all.gen.philonbr);
-	all.gen.tstlife = calctime(&all.gen.tval);
+	all.gen.tstlife = calctime();
 	prepare_individuals(&all);
+	pthread_create(&all.monitor, NULL, (void *)&monitoreat, &all);
+	pthread_detach(all.monitor);
 	startsim_addphilos(&all);
 	check_finish_sim(&all);
 	finish_sim(&all);
+}
+
+void	finish_sim(t_all *all)
+{
+	int	i;
+
+	i = 0;
+	while (i < all->gen.philonbr)
+	{
+		pthread_join(all->philos[i].philo, NULL);
+		i++;
+	}
+	i = 0;
+	while (i < all->gen.philonbr)
+	{
+		pthread_mutex_destroy(&all->philos[i].right);
+		i++;
+	}
+	pthread_mutex_destroy(&all->death);
+	pthread_mutex_destroy(&all->eat);
+	free(all->philos);
 }

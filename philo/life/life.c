@@ -6,14 +6,16 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:16:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/15 17:15:09 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/21 23:54:08 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "life.h"
 
 void	*philolife(t_philo *philo)
-{	
+{
+	if (philo->nbr % 2 == 0)
+		usleep(philo->gen->t_eat * 1000);
 	while (1)
 	{
 		if (is_dead(philo))
@@ -31,17 +33,17 @@ void	*philolife(t_philo *philo)
 
 void	philosleep(t_philo *philo)
 {
-	philo->stat.lastsleep = calctime(&philo->tval) - philo->gen->tstlife;
+	philo->stat.lastsleep = calctime() - philo->gen->tstlife;
 	pthread_mutex_lock(philo->death);
 	if (!philo->gen->endlife)
 		printf("%s%ld %d is sleeping\n%s", philo->clr,
 			(long)philo->stat.lastsleep, philo->nbr, RESET_COLOR);
 	pthread_mutex_unlock(philo->death);
-	philo->stat.act = calctime(&philo->tval) - philo->gen->tstlife;
+	philo->stat.act = calctime() - philo->gen->tstlife;
 	while (philo->stat.act < philo->stat.lastsleep + philo->gen->t_sleep
 		&& philo->stat.act < philo->stat.lastmeal + philo->gen->t_die)
 	{
-		philo->stat.act = calctime(&philo->tval) - philo->gen->tstlife;
+		philo->stat.act = calctime() - philo->gen->tstlife;
 		pthread_mutex_lock(philo->death);
 		if (philo->gen->endlife)
 		{
@@ -50,17 +52,11 @@ void	philosleep(t_philo *philo)
 		}
 		pthread_mutex_unlock(philo->death);
 	}
-	if (philo->stat.act >= philo->stat.lastmeal + philo->gen->t_die)
-	{
-		pthread_mutex_lock(philo->death);
-		philo->stat.dead = 1;
-		pthread_mutex_unlock(philo->death);
-	}
 }
 
 void	philothink(t_philo *philo)
 {
-	philo->stat.act = calctime(&philo->tval) - philo->gen->tstlife;
+	philo->stat.act = calctime() - philo->gen->tstlife;
 	pthread_mutex_lock(philo->death);
 	if (philo->gen->endlife)
 	{
@@ -70,10 +66,4 @@ void	philothink(t_philo *philo)
 	pthread_mutex_unlock(philo->death);
 	printf("%s%ld %d is thinking\n%s", philo->clr,
 		(long)philo->stat.act, philo->nbr, RESET_COLOR);
-	if (philo->stat.act >= philo->stat.lastmeal + philo->gen->t_die)
-	{
-		pthread_mutex_lock(philo->death);
-		philo->stat.dead = 1;
-		pthread_mutex_unlock(philo->death);
-	}
 }
