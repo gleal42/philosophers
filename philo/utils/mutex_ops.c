@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 17:06:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/15 17:15:29 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/22 17:20:05 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,18 @@ int	is_dead(t_philo *philo)
 		return (1);
 	}
 	pthread_mutex_unlock(philo->death);
+	return (0);
+}
+
+int	is_dead_gen(t_all *all)
+{
+	pthread_mutex_lock(&all->death);
+	if (all->gen.endlife)
+	{
+		pthread_mutex_unlock(&all->death);
+		return (1);
+	}
+	pthread_mutex_unlock(&all->death);
 	return (0);
 }
 

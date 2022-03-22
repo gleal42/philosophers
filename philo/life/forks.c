@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 17:08:14 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 23:54:56 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/22 16:33:47 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,7 @@ int	try_pick_first_fork(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->right);
 	if (is_dead(philo))
-	{
-		pthread_mutex_unlock(&philo->right);
 		return (1);
-	}
 	philo->stat.act = calctime() - philo->gen->tstlife;
 	printf("%s%ld %d has taken a fork\n%s", philo->clr,
 		(long)philo->stat.act, philo->nbr, RESET_COLOR);
@@ -46,10 +43,7 @@ int	try_pick_second_fork(t_philo *philo)
 		return (starve(philo));
 	pthread_mutex_lock(philo->left);
 	if (is_dead(philo))
-	{
-		leave_forks_on_the_table(&philo->right, philo->left);
 		return (1);
-	}
 	philo->stat.act = calctime() - philo->gen->tstlife;
 	printf("%s%ld %d has taken a fork\n%s", philo->clr,
 		(long)philo->stat.act, philo->nbr, RESET_COLOR);

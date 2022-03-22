@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 23:25:20 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/22 17:14:34 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	ft_putstr_fd(char *str, int n);
 
 void	leave_forks_on_the_table(pthread_mutex_t *right, pthread_mutex_t *left);
 int		is_dead(t_philo *philo);
+int		is_dead_gen(t_all *all);
 void	death_bed(t_philo *philo);
 void	rest_cutlery(t_philo *philo);
 

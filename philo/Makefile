@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC := gcc
-FLAGS := -Wall -Wextra -Werror -fsanitize=thread -g 
+FLAGS := -Wall -Wextra -Werror -g 
 INCLUDE_DIRS := includes \
 				life \
 				utils \
