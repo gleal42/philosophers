@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:05:01 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 19:44:35 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/22 18:12:11 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 int	philopickforks(t_philo *philo)
 {
 	sem_wait(philo->sm.forkpile);
-	if (philo->gen->eat_freq && philo->ate == philo->gen->eat_freq)
-		usleep(30);
+	if (calctime() - philo->gen->tstlife >= philo->lastmeal + philo->gen->t_die)
+		return (philokill(philo));
 	careful_print("%s%ld %d has taken a fork\n%s", philo);
 	if (philo->gen->philonbr == 1)
 		return (starve(philo));
 	sem_wait(philo->sm.forkpile);
-	if (philo->gen->eat_freq && philo->ate == philo->gen->eat_freq)
-		usleep(30);
+	if (calctime() - philo->gen->tstlife >= philo->lastmeal + philo->gen->t_die)
+		return (philokill(philo));
 	careful_print("%s%ld %d has taken a fork\n%s", philo);
 	return (philoeat(philo));
 }
@@ -40,12 +40,10 @@ int	starve(t_philo *philo)
 int	philoeat(t_philo *philo)
 {
 	philo->lastmeal = calctime() - philo->gen->tstlife;
-	if (philo->gen->eat_freq && philo->ate == philo->gen->eat_freq)
-		usleep(30);
 	careful_print("%s%ld %d is eating\n%s", philo);
 	if (eating(philo))
 		return (1);
-	if (philo->act >= philo->lastmeal + philo->gen->t_die)
+	if (calctime() - philo->gen->tstlife >= philo->lastmeal + philo->gen->t_die)
 		return (philokill(philo));
 	return (0);
 }

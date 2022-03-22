@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:47:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 19:28:19 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/22 18:23:33 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,11 @@ void	philosophers(int argc, char **argv)
 	i = 0;
 	pthread_mutex_init(&all.finishtype, NULL);
 	all.starve = 0;
-	pthread_create(&all.check_ate, NULL, (void *)check_ate, &all);
-	pthread_detach(all.check_ate);
+	if (argc == 6)
+	{
+		pthread_create(&all.check_ate, NULL, (void *)check_ate, &all);
+		pthread_detach(all.check_ate);
+	}
 	pthread_create(&all.check_finish, NULL, (void *)check_finish, &all);
 	pthread_detach(all.check_finish);
 	while (i < all.philo.gen->philonbr)

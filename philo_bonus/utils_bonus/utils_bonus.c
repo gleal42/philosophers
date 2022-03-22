@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 18:02:52 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/22 18:12:38 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	is_inbetween_time(double min, double val, double max)
 
 void	careful_print(const char *str, t_philo *philo)
 {
+	if (philo->ate >= philo->gen->eat_freq)
+		usleep(20);
 	sem_wait(philo->sm.carefulprinting);
 	philo->act = calctime() - philo->gen->tstlife;
 	printf(str, philo->clr, (long)philo->act, philo->nbr, RESET_COLOR);
