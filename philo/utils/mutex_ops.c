@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 17:06:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 01:14:44 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 15:55:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ void	rest_cutlery(t_philo *philo)
 {
 	while (1)
 	{
-		pthread_mutex_lock(philo->ate);
+		pthread_mutex_lock(philo->satisfied);
 		if (philo->gen->endlife)
 		{
-			pthread_mutex_unlock(philo->ate);
+			pthread_mutex_unlock(philo->satisfied);
 			return ;
 		}
-		pthread_mutex_unlock(philo->ate);
+		pthread_mutex_unlock(philo->satisfied);
 	}
 }

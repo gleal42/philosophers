@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 01:23:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 02:38:42 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 16:04:37 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,11 @@ void	philosophers(int argc, char **argv)
 	all.gen.tstlife = calctime(&all.gen);
 	prepare_individuals(&all);
 	startsim_addphilos(&all);
-	pthread_create(&all.check_dead, NULL, (void *)&check_dead_loop, &all);
-	pthread_detach(all.check_dead);
 	if (argc == 6)
 	{
 		pthread_create(&all.check_ate, NULL, (void *)&check_ate_loop, &all);
-		pthread_detach(all.check_ate);
 	}
+	check_dead_loop(&all);
+	pthread_join(all.check_ate, NULL);
 	finish_sim(&all);
 }

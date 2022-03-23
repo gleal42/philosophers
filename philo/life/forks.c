@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 17:08:14 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 02:46:06 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 15:37:25 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,12 @@ int	philopickforks(t_philo *philo)
 int	try_pick_first_fork(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->right);
+	if (is_dead(philo))
+		return (1);
 	pthread_mutex_lock(&philo->checkfork);
 	philo->stat.locked_right = 1;
 	pthread_mutex_unlock(&philo->checkfork);
 	philo->stat.act = calctime(philo->gen);
-	if (is_dead(philo))
-		return (1);
-	//printf("%ld %d cmooooooooooon\n", (long)calctime(philo->gen), philo->nbr);
 	printf("%s%ld %d has taken a fork\n%s", philo->clr,
 		(long)philo->stat.act, philo->nbr, RESET_COLOR);
 	return (0);
@@ -43,11 +42,11 @@ int	try_pick_second_fork(t_philo *philo)
 	if (philo->gen->philonbr == 1)
 		return (starve(philo));
 	pthread_mutex_lock(philo->left);
+	if (is_dead(philo))
+		return (1);
 	pthread_mutex_lock(&philo->checkfork);
 	philo->stat.locked_left = 1;
 	pthread_mutex_unlock(&philo->checkfork);
-	if (is_dead(philo))
-		return (1);
 	philo->stat.act = calctime(philo->gen);
 	printf("%s%ld %d has taken a fork\n%s", philo->clr,
 		(long)philo->stat.act, philo->nbr, RESET_COLOR);

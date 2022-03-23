@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:16:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 02:52:45 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 15:50:44 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	*philolife(t_philo *philo)
 {
 	if (philo->nbr % 2 == 0)
-		usleep(philo->gen->t_eat * 1000);
+		usleep(1000);
 	while (1)
 	{
 		if (philopickforks(philo))

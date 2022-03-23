@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 17:08:46 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 02:45:48 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 16:14:48 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,12 @@ int	eating(t_philo *philo)
 		philo->stat.act = calctime(philo->gen);
 		if (philo->stat.act >= philo->stat.lastmeal + philo->gen->t_eat)
 		{
-			pthread_mutex_lock(philo->ate);
 			philo->stat.ate++;
-			pthread_mutex_unlock(philo->ate);
-			usleep(10);
+			if (philo->gen->eat_freq && philo->stat.ate >= philo->gen->eat_freq)
+			pthread_mutex_lock(philo->satisfied);
+			philo->stat.satisfied = 1;
+			pthread_mutex_unlock(philo->satisfied);
+			break ;
 		}
 	}
 	return (0);

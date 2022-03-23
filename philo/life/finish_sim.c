@@ -15,32 +15,36 @@
 void	check_ate_loop(t_all *all)
 {
 	int	i;
-	int	min;
 
 	while (1)
 	{
 		i = 0;
-		pthread_mutex_lock(&all->finishtype);
 		while (i < all->gen.philonbr)
 		{
-			pthread_mutex_lock(&all->ate);
-			if (i == 0 || all->philos[i].stat.ate < min)
-				min = all->philos[i].stat.ate;
-			pthread_mutex_unlock(&all->ate);
-			i++;
-		}
-		if (min >= all->gen.eat_freq)
-		{
+			pthread_mutex_lock(&all->satisfied);
+			if (all->philos[i].stat.satisfied)
+				i++;
+			pthread_mutex_unlock(&all->satisfied);
+			pthread_mutex_lock(&all->finishtype);
 			if (all->simfinished)
+			{
+				pthread_mutex_unlock(&all->finishtype);
 				return ;
-			all->simfinished = 1;
-			stop_activity(all);
-			restart_activity(all);
-			unlock_all_forks(all);
+			}
+			pthread_mutex_unlock(&all->finishtype);
+		}
+		printf("%ld %d cmooooooooooon\n", (long)calctime(&all->gen), i + 1);
+		if (all->simfinished)
+		{
 			pthread_mutex_unlock(&all->finishtype);
 			return ;
 		}
+		all->simfinished = 1;
+		stop_activity(all);
+		unlock_all_forks(all);
+		restart_activity(all);
 		pthread_mutex_unlock(&all->finishtype);
+		return ;
 	}
 }
 
@@ -59,12 +63,15 @@ void	check_dead_loop(t_all *all)
 			{
 				pthread_mutex_unlock(&all->philos[i].lastmeal);
 				if (all->simfinished)
+				{
+					pthread_mutex_unlock(&all->finishtype);
 					return ;
+				}
 				all->simfinished = 1;
 				stop_activity(all);
 				printf("%ld %d died\n", (long)calctime(&all->gen), i + 1);
-				restart_activity(all);
 				unlock_all_forks(all);
+				restart_activity(all);
 				pthread_mutex_unlock(&all->finishtype);
 				return ;
 			}
@@ -114,13 +121,13 @@ void	unlock_all_forks(t_all *all)
 			all->philos[i].stat.locked_right = 0;
 		}
 		pthread_mutex_unlock(&all->philos[i].checkfork);
-		pthread_mutex_lock(&all->philos[i+1].checkfork);
-		if (all->philos[i+1].stat.locked_left == 1)
+		pthread_mutex_lock(&all->philos[(i+1) % all->gen.philonbr].checkfork);
+		if (all->philos[(i+1) % all->gen.philonbr].stat.locked_left == 1)
 		{
-			pthread_mutex_unlock(all->philos[i+1].left);
-			all->philos[i+1].stat.locked_left = 0;
+			pthread_mutex_unlock(all->philos[(i+1) % all->gen.philonbr].left);
+			all->philos[(i+1) % all->gen.philonbr].stat.locked_left = 0;
 		}
-		pthread_mutex_unlock(&all->philos[i+1].checkfork);
+		pthread_mutex_unlock(&all->philos[(i+1) % all->gen.philonbr].checkfork);
 		i++;
 	}
 }
@@ -144,6 +151,6 @@ void	finish_sim(t_all *all)
 	}
 	pthread_mutex_unlock(&all->finishtype);
 	pthread_mutex_destroy(&all->finishtype);
-	pthread_mutex_destroy(&all->ate);
+	pthread_mutex_destroy(&all->satisfied);
 	free(all->philos);
 }
