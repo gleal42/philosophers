@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 17:08:14 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 15:37:25 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 16:35:56 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ int	try_pick_first_fork(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->right);
 	if (is_dead(philo))
+	{
+		pthread_mutex_unlock(&philo->right);
 		return (1);
+	}
 	pthread_mutex_lock(&philo->checkfork);
 	philo->stat.locked_right = 1;
 	pthread_mutex_unlock(&philo->checkfork);
@@ -43,7 +46,10 @@ int	try_pick_second_fork(t_philo *philo)
 		return (starve(philo));
 	pthread_mutex_lock(philo->left);
 	if (is_dead(philo))
+	{
+		pthread_mutex_unlock(philo->left);
 		return (1);
+	}
 	pthread_mutex_lock(&philo->checkfork);
 	philo->stat.locked_left = 1;
 	pthread_mutex_unlock(&philo->checkfork);
