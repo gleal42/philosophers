@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 17:08:14 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 16:35:56 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 21:24:23 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ int	philoeat(t_philo *philo, pthread_mutex_t *right, pthread_mutex_t *left)
 	leave_forks_on_the_table(right, left);
 	pthread_mutex_lock(&philo->checkfork);
 	philo->stat.locked_right = 0;
+	pthread_mutex_unlock(&philo->checkfork);
+	pthread_mutex_lock(&philo->checkfork);
 	philo->stat.locked_left = 0;
 	pthread_mutex_unlock(&philo->checkfork);
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:31:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 15:55:00 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 21:27:23 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 int	initlife(int argc, char **argv, t_all *all)
 {
 	all->gen.endlife = 0;
-	if (!is_input_integer(&argv[1]))
+	if (!(is_input_integer(&argv[1], argc)))
 		return (1);
 	all->gen.philonbr = ft_atoi(argv[1]);
+	if (all->gen.philonbr == 0)
+		return (1);
 	all->gen.t_eat = ft_atoi(argv[3]);
 	all->gen.t_sleep = ft_atoi(argv[4]);
 	all->gen.t_die = ft_atoi(argv[2]);
@@ -50,6 +52,7 @@ void	prepare_individuals(t_all	*all)
 		memset(&all->philos[i].stat, '\0', sizeof(t_stats));
 		all->philos[i].clr = set_color(i);
 		pthread_mutex_init(&all->philos[i].right, NULL);
+		pthread_mutex_init(&all->philos[i].checkfork, NULL);
 		all->philos[(i + 1) % all->gen.philonbr].left = &all->philos[i].right;
 		i++;
 	}

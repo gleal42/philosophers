@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 17:20:43 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 19:23:30 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,32 +66,3 @@ int	is_inbetween_time(double min, double val, double max)
 	else
 		return (0);
 }
-
-void	wrap_in_mutexes(pthread_mutex_t	*mut, int valid, t_all *all, void (*func)(t_all *))
-{
-	pthread_mutex_lock(mut);
-	if (valid)
-	{
-		pthread_mutex_unlock(mut);
-		func(all);
-		return ;
-	}
-	pthread_mutex_unlock(mut);
-}
-
-
-//pthread_mutex_lock(&all->philos[i].lastmeal);
-//if (calctime(&all->gen)
-//	>= all->philos[i].stat.lastmeal + all->gen.t_die)
-//{
-//	pthread_mutex_unlock(&all->philos[i].lastmeal);
-//	if (lock_finishtype(all))
-//		return ;
-//	stop_activity(all);
-//	printf("%ld %d died\n", (long)calctime(&all->gen), i + 1);
-//	unlock_all_forks(all);
-//	restart_activity(all);
-//	pthread_mutex_unlock(&all->finishtype);
-//	return ;
-//}
-//pthread_mutex_unlock(&all->philos[i].lastmeal);
