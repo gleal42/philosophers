@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:16:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 19:35:31 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 21:33:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	*philolife(t_philo *philo)
 
 int	philosleep(t_philo *philo)
 {
-	double lastsleep;
+	double	lastsleep;
 
 	lastsleep = calctime(philo->gen);
 	if (is_dead(philo))

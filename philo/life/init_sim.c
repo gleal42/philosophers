@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:31:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 21:27:23 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 21:49:50 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	initlife(int argc, char **argv, t_all *all)
 {
 	all->gen.endlife = 0;
-	if (!(is_input_integer(&argv[1], argc)))
+	if (!(is_input_uint(&argv[1], argc)))
 		return (1);
 	all->gen.philonbr = ft_atoi(argv[1]);
 	if (all->gen.philonbr == 0)
