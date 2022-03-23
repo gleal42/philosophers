@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 17:20:43 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 18:35:35 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,6 @@ int	is_inbetween_time(double min, double val, double max)
 		return (0);
 }
 
-void	wrap_in_mutexes(pthread_mutex_t	*mut, int valid, t_all *all, void (*func)(t_all *))
-{
-	pthread_mutex_lock(mut);
-	if (valid)
-	{
-		pthread_mutex_unlock(mut);
-		func(all);
-		return ;
-	}
-	pthread_mutex_unlock(mut);
-}
 
 
 //pthread_mutex_lock(&all->philos[i].lastmeal);

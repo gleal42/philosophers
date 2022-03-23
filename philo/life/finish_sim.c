@@ -5,12 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/23 16:53:55 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 17:02:33 by gleal            ###   ########.fr       */
+/*   Created: 2022/03/23 18:53:42 by gleal             #+#    #+#             */
+/*   Updated: 2022/03/23 18:53:44 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "life.h"
+
+int	wrap_in_mutexes(pthread_mutex_t	*mut, int valid,
+		t_all *all, t_philo *philo, int (*func)(t_all *, t_philo *))
+{
+	pthread_mutex_lock(mut);
+	if (valid)
+	{
+		pthread_mutex_unlock(mut);
+		func(all, philo);
+		return (1);
+	}
+	pthread_mutex_unlock(mut);
+	return (0);
+}
 
 void	check_ate_loop(t_all *all)
 {
@@ -23,13 +37,8 @@ void	check_ate_loop(t_all *all)
 		if (all->philos[i].stat.satisfied)
 			i++;
 		pthread_mutex_unlock(&all->satisfied);
-		pthread_mutex_lock(&all->finishtype);
-		if (all->simfinished)
-		{
-			pthread_mutex_unlock(&all->finishtype);
+		if (wrap_in_mutexes(&all->finishtype, all->simfinished, NULL, NULL, NULL))
 			return ;
-		}
-		pthread_mutex_unlock(&all->finishtype);
 	}
 	pthread_mutex_lock(&all->finishtype);
 	all->simfinished = 1;
@@ -38,6 +47,32 @@ void	check_ate_loop(t_all *all)
 	restart_activity(all);
 	pthread_mutex_unlock(&all->finishtype);
 	return ;
+}
+
+int	lock_finishtype(t_all *all, t_philo *philo)
+{
+	(void)all;
+	(void)philo;
+	return (0);
+}
+
+int	die_philosopher(t_all *all, t_philo *philo)
+{
+	if (!wrap_in_mutexes(&all->finishtype
+	, all->simfinished
+	, all
+	, philo
+	, &lock_finishtype))
+	{
+		all->simfinished = 1;
+		stop_activity(all);
+		printf("%ld %d died\n", (long)calctime(&all->gen), philo->nbr);
+		unlock_all_forks(all);
+		restart_activity(all);
+		return (0);
+	}
+	else
+		return (1);
 }
 
 void	check_dead_loop(t_all *all)
@@ -50,37 +85,15 @@ void	check_dead_loop(t_all *all)
 		i = 0;
 		while (i < all->gen.philonbr)
 		{
-			pthread_mutex_lock(&all->finishtype);
-			pthread_mutex_lock(&all->philos[i].lastmeal);
-			if (calctime(&all->gen)
-				>= all->philos[i].stat.lastmeal + all->gen.t_die)
-			{
-				pthread_mutex_unlock(&all->philos[i].lastmeal);
-				if (lock_finishtype(all))
-					return ;
-				stop_activity(all);
-				printf("%ld %d died\n", (long)calctime(&all->gen), i + 1);
-				unlock_all_forks(all);
-				restart_activity(all);
-				pthread_mutex_unlock(&all->finishtype);
+			if (wrap_in_mutexes(&all->philos[i].lastmeal
+			, calctime(&all->gen) >= all->philos[i].stat.lastmeal + all->gen.t_die
+			, all
+			, &all->philos[i]
+			, &die_philosopher))
 				return ;
-			}
-			pthread_mutex_unlock(&all->philos[i].lastmeal);
-			pthread_mutex_unlock(&all->finishtype);
 			i++;
 		}
 	}
-}
-
-int	lock_finishtype(t_all *all)
-{
-	if (all->simfinished)
-	{
-		pthread_mutex_unlock(&all->finishtype);
-		return (1);
-	}
-	all->simfinished = 1;
-	return (0);
 }
 
 void	stop_activity(t_all *all)

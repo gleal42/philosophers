@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:53:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 17:18:13 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 18:31:53 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	finish_sim(t_all *all);
 void	unlock_all_forks(t_all *all);
 void	stop_activity(t_all *all);
 void	restart_activity(t_all *all);
-int		lock_finishtype(t_all *all);
 
 //forks.c
 
