@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC := gcc
-FLAGS := -Wall -Wextra -Werror -g 
+FLAGS := -Wall -Wextra -Werror -pthread -fsanitize=thread
 INCLUDE_DIRS := includes \
 				life \
 				utils \
@@ -21,7 +21,7 @@ NAME := philo
 SRCS := philo.c \
 		life/life.c \
 		life/eating.c \
-		life/prepare_life.c \
+		life/init_sim.c \
 		life/forks.c \
 		life/finish_sim.c \
 		utils/utils.c \

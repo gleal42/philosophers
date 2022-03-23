@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/22 17:43:44 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/22 20:11:28 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ int	ft_atoi(const char *str)
 	return (nbr * sign);
 }
 
-double	calctime(void)
+double	calctime(const t_gen *gen)
 {
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	return ((double)(time.tv_sec * 1000 + time.tv_usec / 1000));
+	return ((double)(time.tv_sec * 1000 + time.tv_usec / 1000 - gen->tstlife));
 }
 
 void	*ft_memset(void *b, int c, size_t len)

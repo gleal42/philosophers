@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/22 17:14:34 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/22 20:05:06 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 //utils.c
 
 int		ft_atoi(const char *str);
-double	calctime(void);
+double	calctime(const t_gen *gen);
 void	*ft_memset(void *b, int c, size_t len);
 int		is_inbetween_time(double min, double val, double max);
 
