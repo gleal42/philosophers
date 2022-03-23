@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:58:26 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 23:38:32 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 20:17:41 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ typedef struct s_stats
 	double	lastmeal;
 	int		dead;
 	int		ate;
+	int		satisfied;
+	int		locked_right;
+	int		locked_left;
 }			t_stats;
 
 typedef struct s_gen
@@ -46,20 +49,22 @@ typedef struct s_philo
 	t_stats				stat;
 	int					nbr;
 	char				*clr;
-	pthread_mutex_t		*left;
 	pthread_mutex_t		right;
-	pthread_mutex_t		*death;
-	pthread_mutex_t		*eat;
-	pthread_mutex_t		*monitor;
+	pthread_mutex_t		died;
+	pthread_mutex_t		lastmeal;
+	pthread_mutex_t		checkfork;
+	pthread_mutex_t		*left;
+	pthread_mutex_t		*satisfied;
 }			t_philo;
 
 typedef struct s_all
 {
 	t_gen			gen;
 	t_philo			*philos;
-	pthread_t		monitor;
-	pthread_mutex_t	death;
-	pthread_mutex_t	eat;
+	pthread_t		check_ate;
+	pthread_mutex_t	satisfied;
+	pthread_mutex_t	finishtype;
+	int				simfinished;
 }			t_all;
 
 #endif

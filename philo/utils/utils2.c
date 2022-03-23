@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 18:20:46 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/14 18:21:48 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 21:49:50 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,14 @@ char	*set_color(int clr)
 		return (LBLU);
 }
 
-int	is_input_integer(char **stack_a_args)
+int	is_input_uint(char **stack_a_args, int argc)
 {
 	int	i;
 
 	i = 0;
-	if (!stack_a_args[0])
-		return (0);
-	while (stack_a_args[i])
+	while (i < argc - 1)
 	{
-		if (!is_integer(stack_a_args[i]))
+		if (!is_unsigned_integer(stack_a_args[i]))
 		{
 			ft_putstr_fd("Error: Input not numeric\n", 1);
 			return (0);
@@ -46,7 +44,7 @@ int	is_input_integer(char **stack_a_args)
 	return (1);
 }
 
-int	is_integer(char *str)
+int	is_unsigned_integer(char *str)
 {
 	char	*strg;
 
@@ -57,7 +55,7 @@ int	is_integer(char *str)
 		strg++;
 	if (!is_all_digits(strg))
 		return (0);
-	if (!is_within_lims(strg))
+	if (!is_within_lims(str))
 		return (0);
 	return (1);
 }
@@ -82,7 +80,7 @@ int	is_within_lims(char *strg)
 	nbr = ft_atol(strg);
 	if (nbr > INT32_MAX)
 		return (0);
-	if (nbr < INT32_MIN)
+	if (nbr < 0)
 		return (0);
 	return (1);
 }

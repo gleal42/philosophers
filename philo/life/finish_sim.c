@@ -5,91 +5,53 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/14 18:33:56 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/22 17:47:13 by gleal            ###   ########.fr       */
+/*   Created: 2022/03/23 22:17:28 by gleal             #+#    #+#             */
+/*   Updated: 2022/03/23 22:19:24 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "life.h"
 
-void	check_ate_loop(t_all *all)
+void	stop_sim_print(t_all *all, char *str, int i)
 {
-	while (1)
+	pthread_mutex_lock(&all->finishtype);
+	if (all->simfinished)
 	{
-		pthread_mutex_lock(&all->death);
-		if (all->gen.endlife)
-		{
-			pthread_mutex_unlock(&all->death);
-			return ;
-		}
-		pthread_mutex_unlock(&all->death);
-		check_all_eat(all);
+		pthread_mutex_unlock(&all->finishtype);
+		return ;
 	}
+	all->simfinished = 1;
+	stop_activity(all);
+	if (str)
+		printf(str, (long)calctime(&all->gen), i + 1);
+	unlock_all_forks(all);
+	restart_activity(all);
+	pthread_mutex_unlock(&all->finishtype);
 }
 
-void	check_all_eat(t_all *all)
+void	stop_activity(t_all *all)
 {
 	int	i;
-	int	min;
 
 	i = 0;
-	pthread_mutex_lock(&all->eat);
-	min = all->philos[0].stat.ate;
-	pthread_mutex_unlock(&all->eat);
 	while (i < all->gen.philonbr)
 	{
-		pthread_mutex_lock(&all->eat);
-		if (all->philos[i].stat.ate < min)
-			min = all->philos[i].stat.ate;
-		pthread_mutex_unlock(&all->eat);
+		pthread_mutex_lock(&all->philos[i].died);
+		all->philos[i].stat.dead = 1;
 		i++;
 	}
-	pthread_mutex_lock(&all->eat);
-	if (all->gen.eat_freq && min >= all->gen.eat_freq)
-	{
-		pthread_mutex_lock(&all->death);
-		all->gen.endlife = 1;
-		unlock_all_forks(all);
-		pthread_mutex_unlock(&all->death);
-	}
-	pthread_mutex_unlock(&all->eat);
 }
 
-void	monitordie(t_all *all)
+void	restart_activity(t_all *all)
 {
 	int	i;
 
-	while (1)
+	i = 0;
+	while (i < all->gen.philonbr)
 	{
-		i = 0;
-		while (i < all->gen.philonbr)
-		{
-			if (is_dead_gen(all))
-				return ;
-			if (did_philo_die(all, i))
-				return ;
-			i++;
-		}
+		pthread_mutex_unlock(&all->philos[i].died);
+		i++;
 	}
-}
-
-int	did_philo_die(t_all *all, const int i)
-{
-	pthread_mutex_lock(&all->eat);
-	if (calctime() - all->gen.tstlife
-		>= all->philos[i].stat.lastmeal + all->gen.t_die)
-	{
-		pthread_mutex_unlock(&all->eat);
-		pthread_mutex_lock(&all->death);
-		all->gen.endlife = 1;
-		unlock_all_forks(all);
-		all->gen.tendlife = calctime() - all->gen.tstlife;
-		printf("%ld %d died\n", (long)all->gen.tendlife, i + 1);
-		pthread_mutex_unlock(&all->death);
-		return (1);
-	}
-	pthread_mutex_unlock(&all->eat);
-	return (0);
 }
 
 void	unlock_all_forks(t_all *all)
@@ -99,7 +61,45 @@ void	unlock_all_forks(t_all *all)
 	i = 0;
 	while (i < all->gen.philonbr)
 	{
-		pthread_mutex_unlock(&all->philos[i].right);
+		pthread_mutex_lock(&all->philos[i].checkfork);
+		if (all->philos[i].stat.locked_right == 1)
+		{
+			all->philos[i].stat.locked_right = 0;
+			pthread_mutex_unlock(&all->philos[i].right);
+		}
+		pthread_mutex_unlock(&all->philos[i].checkfork);
+		pthread_mutex_lock(&all->philos[(i + 1) % all->gen.philonbr].checkfork);
+		if (all->philos[(i + 1) % all->gen.philonbr].stat.locked_left == 1)
+		{
+			all->philos[(i + 1) % all->gen.philonbr].stat.locked_left = 0;
+			pthread_mutex_unlock(all->philos[(i + 1) % all->gen.philonbr].left);
+		}
+		pthread_mutex_unlock(&all->philos[(i + 1)
+			% all->gen.philonbr].checkfork);
 		i++;
 	}
+}
+
+void	finish_sim(t_all *all)
+{
+	int	i;
+
+	i = 0;
+	while (i < all->gen.philonbr)
+	{
+		pthread_join(all->philos[i].philo, NULL);
+		i++;
+	}
+	i = 0;
+	while (i < all->gen.philonbr)
+	{
+		pthread_mutex_destroy(&all->philos[i].right);
+		pthread_mutex_destroy(&all->philos[i].died);
+		pthread_mutex_destroy(&all->philos[i].lastmeal);
+		pthread_mutex_destroy(&all->philos[i].checkfork);
+		i++;
+	}
+	pthread_mutex_destroy(&all->finishtype);
+	pthread_mutex_destroy(&all->satisfied);
+	free(all->philos);
 }
