@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC := gcc
-FLAGS := -Wall -Wextra -Werror -g -pthread
+FLAGS := -Wall -Wextra -Werror -pthread
 INCLUDE_DIRS := includes \
 				life \
 				utils \
@@ -24,9 +24,11 @@ SRCS := philo.c \
 		life/init_sim.c \
 		life/forks.c \
 		life/monitor.c \
+		life/finish_sim.c \
 		utils/utils.c \
 		utils/utils2.c \
 		utils/utils3.c \
+		utils/mutex_create.c \
 		utils/mutex_ops.c
 OBJS := $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 21:49:50 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/23 23:54:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 # define UTILS_H
 
 # include "philo.h"
+
+typedef enum mut
+{
+	DIED,
+	LASTMEAL,
+	RIGHT,
+	CHECKFORK,
+}	t_num_mut;
 
 //utils.c
 
@@ -42,5 +50,13 @@ void	leave_forks_on_the_table(pthread_mutex_t *right, pthread_mutex_t *left);
 int		is_dead(t_philo *philo);
 void	death_bed(t_philo *philo);
 void	rest_cutlery(t_philo *philo);
+
+//mutex_create.c
+
+int		create_gen_mutexes(t_all *all);
+int		delete_gen_mutexes(t_all *all);
+int		create_philo_mutexes(t_all *all, int i);
+int		delete_philo_mutexes(t_all *all, t_num_mut muttype, int i);
+int		delete_other_philo_mut(t_all *all, int last_created);
 
 #endif

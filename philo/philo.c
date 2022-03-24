@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/11 01:23:07 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 22:19:46 by gleal            ###   ########.fr       */
+/*   Created: 2022/03/24 00:29:57 by gleal             #+#    #+#             */
+/*   Updated: 2022/03/24 00:29:59 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,31 @@ int	main(int argc, char **argv)
 		printf("Too many arguments\n");
 }
 
-void	philosophers(int argc, char **argv)
+int	philosophers(int argc, char **argv)
 {
 	t_all	all;
 
 	if (initlife(argc, argv, &all) != EXIT_SUCCESS)
-		return ;
+		return (1);
 	all.philos = malloc(sizeof(t_philo) * all.gen.philonbr);
 	if (!all.philos)
-		return ;
+		return (delete_gen_mutexes(&all));
 	all.gen.tstlife = 0;
 	all.gen.tstlife = calctime(&all.gen);
-	prepare_individuals(&all);
-	startsim_addphilos(&all);
+	if (prepare_individuals(&all) == EXIT_FAILURE)
+		return (1);
+	if (startsim_addphilos(&all))
+		return (1);
 	if (argc == 6)
 	{
-		pthread_create(&all.check_ate, NULL, (void *)&check_ate_loop, &all);
+		if (pthread_create(&all.check_ate, NULL, (void *)&check_ate_loop, &all))
+		{
+			finish_sim(&all);
+			return (0);
+		}
 		pthread_detach(all.check_ate);
 	}
 	check_dead_loop(&all);
 	finish_sim(&all);
+	return (0);
 }
