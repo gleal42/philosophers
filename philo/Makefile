@@ -20,7 +20,6 @@ INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := philo
 SRCS := philo.c \
 		life/life.c \
-		life/eating.c \
 		life/init_sim.c \
 		life/forks.c \
 		life/monitor.c \

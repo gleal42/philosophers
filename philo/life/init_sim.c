@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:31:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 00:18:13 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/24 17:55:39 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	initlife(int argc, char **argv, t_all *all)
 {
-	all->simfinished = 0;
 	all->gen.endlife = 0;
 	if (!(is_input_uint(&argv[1], argc)))
 		return (1);
@@ -48,8 +47,10 @@ int	prepare_individuals(t_all *all)
 			return (1);
 		}
 		all->philos[i].gen = &all->gen;
-		all->philos[i].satisfied = &all->satisfied;
 		all->philos[i].nbr = i + 1;
+		all->philos[i].satisfied = &all->satisfied;
+		all->philos[i].finishsim = &all->finishsim;
+		all->philos[i].lastmeal = &all->lastmeal;
 		memset(&all->philos[i].stat, '\0', sizeof(t_stats));
 		all->philos[i].clr = set_color(i);
 		all->philos[(i + 1) % all->gen.philonbr].left = &all->philos[i].right;
@@ -87,9 +88,6 @@ int	remove_remain_philos_mutexes(t_all *all, int last)
 	while (i < all->gen.philonbr)
 	{
 		pthread_mutex_destroy(&all->philos[i].right);
-		pthread_mutex_destroy(&all->philos[i].died);
-		pthread_mutex_destroy(&all->philos[i].lastmeal);
-		pthread_mutex_destroy(&all->philos[i].checkfork);
 		i++;
 	}
 	delete_gen_mutexes(all);

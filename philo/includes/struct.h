@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:58:26 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 20:17:41 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/24 20:45:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,14 @@
 
 typedef struct s_stats
 {
-	double	lastsleep;
-	double	act;
 	double	lastmeal;
-	int		dead;
 	int		ate;
 	int		satisfied;
-	int		locked_right;
-	int		locked_left;
 }			t_stats;
 
 typedef struct s_gen
 {
-	struct timeval	tval;
 	double			tstlife;
-	double			tendlife;
 	int				philonbr;
 	int				t_die;
 	int				t_eat;
@@ -44,27 +37,24 @@ typedef struct s_gen
 typedef struct s_philo
 {
 	t_gen const			*gen;
-	struct timeval		tval;
-	pthread_t			philo;
 	t_stats				stat;
 	int					nbr;
 	char				*clr;
+	pthread_t			philo;
 	pthread_mutex_t		right;
-	pthread_mutex_t		died;
-	pthread_mutex_t		lastmeal;
-	pthread_mutex_t		checkfork;
 	pthread_mutex_t		*left;
 	pthread_mutex_t		*satisfied;
+	pthread_mutex_t		*finishsim;
+	pthread_mutex_t		*lastmeal;
 }			t_philo;
 
 typedef struct s_all
 {
 	t_gen			gen;
 	t_philo			*philos;
-	pthread_t		check_ate;
 	pthread_mutex_t	satisfied;
-	pthread_mutex_t	finishtype;
-	int				simfinished;
+	pthread_mutex_t	finishsim;
+	pthread_mutex_t	lastmeal;
 }			t_all;
 
 #endif

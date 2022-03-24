@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 17:08:14 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 21:33:27 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/24 20:45:22 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,11 @@ int	philopickforks(t_philo *philo)
 int	try_pick_first_fork(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->right);
-	if (is_dead(philo))
+	if (protected_printing("%s%ld %d has taken a fork 🔱\n%s", philo))
 	{
 		pthread_mutex_unlock(&philo->right);
 		return (1);
 	}
-	pthread_mutex_lock(&philo->checkfork);
-	philo->stat.locked_right = 1;
-	pthread_mutex_unlock(&philo->checkfork);
-	philo->stat.act = calctime(philo->gen);
-	printf("%s%ld %d has taken a fork\n%s", philo->clr,
-		(long)philo->stat.act, philo->nbr, RESET_COLOR);
 	return (0);
 }
 
@@ -45,37 +39,35 @@ int	try_pick_second_fork(t_philo *philo)
 	if (philo->gen->philonbr == 1)
 		return (starve(philo));
 	pthread_mutex_lock(philo->left);
-	if (is_dead(philo))
+	if (protected_printing("%s%ld %d has taken a fork 🔱\n%s", philo))
 	{
+		pthread_mutex_unlock(&philo->right);
 		pthread_mutex_unlock(philo->left);
 		return (1);
 	}
-	pthread_mutex_lock(&philo->checkfork);
-	philo->stat.locked_left = 1;
-	pthread_mutex_unlock(&philo->checkfork);
-	philo->stat.act = calctime(philo->gen);
-	printf("%s%ld %d has taken a fork\n%s", philo->clr,
-		(long)philo->stat.act, philo->nbr, RESET_COLOR);
 	return (0);
 }
 
 int	philoeat(t_philo *philo, pthread_mutex_t *right, pthread_mutex_t *left)
 {
-	pthread_mutex_lock(&philo->lastmeal);
+	pthread_mutex_lock(philo->lastmeal);
 	philo->stat.lastmeal = calctime(philo->gen);
-	pthread_mutex_unlock(&philo->lastmeal);
-	if (is_dead(philo))
+	pthread_mutex_unlock(philo->lastmeal);
+	if (protected_printing("%s%ld %d is eating 🥙\n%s", philo))
+	{
+		pthread_mutex_unlock(&philo->right);
+		pthread_mutex_unlock(philo->left);
 		return (1);
-	printf("%s%ld %d is eating\n%s", philo->clr,
-		(long)philo->stat.lastmeal, philo->nbr, RESET_COLOR);
-	if (eating(philo))
-		return (1);
+	}
+	while (calctime(philo->gen) < philo->stat.lastmeal + philo->gen->t_eat)
+		;
+	philo->stat.ate++;
+	if (philo->gen->eat_freq && philo->stat.ate >= philo->gen->eat_freq)
+	{
+		pthread_mutex_lock(philo->satisfied);
+		philo->stat.satisfied = 1;
+		pthread_mutex_unlock(philo->satisfied);
+	}
 	leave_forks_on_the_table(right, left);
-	pthread_mutex_lock(&philo->checkfork);
-	philo->stat.locked_right = 0;
-	pthread_mutex_unlock(&philo->checkfork);
-	pthread_mutex_lock(&philo->checkfork);
-	philo->stat.locked_left = 0;
-	pthread_mutex_unlock(&philo->checkfork);
 	return (0);
 }

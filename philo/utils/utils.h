@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/23 23:54:09 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/24 18:02:53 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,6 @@
 # define UTILS_H
 
 # include "philo.h"
-
-typedef enum mut
-{
-	DIED,
-	LASTMEAL,
-	RIGHT,
-	CHECKFORK,
-}	t_num_mut;
 
 //utils.c
 
@@ -56,7 +48,7 @@ void	rest_cutlery(t_philo *philo);
 int		create_gen_mutexes(t_all *all);
 int		delete_gen_mutexes(t_all *all);
 int		create_philo_mutexes(t_all *all, int i);
-int		delete_philo_mutexes(t_all *all, t_num_mut muttype, int i);
+int		delete_other_philo_mutexes(t_all *all, int last);
 int		delete_other_philo_mut(t_all *all, int last_created);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:53:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 00:21:32 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/24 19:41:08 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int		remove_remain_philos_mutexes(t_all *all, int last);
 void	*philolife(t_philo *philo);
 int		philosleep(t_philo *philo);
 int		philothink(t_philo *philo);
+int		protected_printing(const char *str, t_philo *philo);
 
 //forks.c
 
@@ -39,20 +40,16 @@ int		try_pick_second_fork(t_philo *philo);
 
 int		philoeat(t_philo *philo, pthread_mutex_t *right, pthread_mutex_t *left);
 int		starve(t_philo *philo);
-int		eating(t_philo *philo);
 
 //monitor.c
 
-void	check_ate_loop(t_all *all);
-void	check_dead_loop(t_all *all);
+int		check_ate_loop(t_all *all, int i);
+void	check_finish_loop(t_all *all);
 
 //finish_sim.c
 
-void	stop_sim_print(t_all *all, char *str, int i);
-void	stop_activity(t_all *all);
 int		finish_sim(t_all *all);
 void	unlock_all_forks(t_all *all);
-void	restart_activity(t_all *all);
 int		lock_finishtype(t_all *all);
 
 #endif
