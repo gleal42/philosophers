@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/23 22:17:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 18:04:46 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/24 22:02:45 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ int	finish_sim(t_all *all)
 		pthread_mutex_destroy(&all->philos[i].right);
 		i++;
 	pthread_mutex_destroy(&all->satisfied);
-	pthread_mutex_destroy(&all->finishsim);
-	pthread_mutex_destroy(&all->lastmeal);
+	pthread_mutex_destroy(&all->right_order);
 	free(all->philos);
 	return (0);
 }

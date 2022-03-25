@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 00:29:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 17:08:33 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 00:52:36 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,16 @@ int	philosophers(int argc, char **argv)
 		return (1);
 	all.philos = malloc(sizeof(t_philo) * all.gen.philonbr);
 	if (!all.philos)
-		return (delete_gen_mutexes(&all));
+	{
+		pthread_mutex_destroy(&all.satisfied);
+		return (1);
+	}
 	all.gen.tstlife = 0;
 	all.gen.tstlife = calctime(&all.gen);
 	if (prepare_individuals(&all) == EXIT_FAILURE)
 		return (1);
 	if (startsim_addphilos(&all))
 		return (1);
-	check_finish_loop(&all);
 	finish_sim(&all);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 18:02:53 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/24 21:49:15 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 //utils.c
 
 int		ft_atoi(const char *str);
-double	calctime(const t_gen *gen);
+long	calctime(const t_gen *gen);
 int		is_inbetween_time(double min, double val, double max);
 
 //utils2.c
@@ -40,13 +40,11 @@ void	ft_putstr_fd(char *str, int n);
 
 void	leave_forks_on_the_table(pthread_mutex_t *right, pthread_mutex_t *left);
 int		is_dead(t_philo *philo);
-void	death_bed(t_philo *philo);
 void	rest_cutlery(t_philo *philo);
 
 //mutex_create.c
 
 int		create_gen_mutexes(t_all *all);
-int		delete_gen_mutexes(t_all *all);
 int		create_philo_mutexes(t_all *all, int i);
 int		delete_other_philo_mutexes(t_all *all, int last);
 int		delete_other_philo_mut(t_all *all, int last_created);

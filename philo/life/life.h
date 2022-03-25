@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:53:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 19:41:08 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 00:07:23 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,26 @@ int		remove_remain_philos_mutexes(t_all *all, int last);
 
 //life.c
 
-void	*philolife(t_philo *philo);
+void	*philolife(void *all);
+void	swap_forks(pthread_mutex_t *right, pthread_mutex_t *left);
 int		philosleep(t_philo *philo);
 int		philothink(t_philo *philo);
-int		protected_printing(const char *str, t_philo *philo);
 
 //forks.c
 
-int		philopickforks(t_philo *philo);
+int		philopickforks(t_philo *philo, pthread_mutex_t *fstfork, pthread_mutex_t *secfork);
 int		try_pick_first_fork(t_philo *philo);
 int		try_pick_second_fork(t_philo *philo);
 
 //eating.c
 
 int		philoeat(t_philo *philo, pthread_mutex_t *right, pthread_mutex_t *left);
+int		philoeat(t_philo *philo, pthread_mutex_t *fstfork, pthread_mutex_t *secfork);
 int		starve(t_philo *philo);
 
 //monitor.c
 
+int		check_satisfied(t_all *all);
 int		check_ate_loop(t_all *all, int i);
 void	check_finish_loop(t_all *all);
 

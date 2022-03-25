@@ -6,67 +6,89 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:16:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 20:44:31 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 00:53:12 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "life.h"
 
-//printf("%ld %ld YOOOOOOOOO\n" ,(long)calctime(philo->gen) ,(long)philo->gen->t_die);
-
-void	*philolife(t_philo *philo)
+void	*philolife(void *ptr)
 {
-	if (philo->nbr % 2 == 0)
-		usleep(philo->gen->t_eat * 1000);
+	t_philo *philo;
+	pthread_mutex_t	*fstfork;
+	pthread_mutex_t	*secfork;
+
+	philo = (t_philo *)ptr;
+	if (philo->gen->philonbr == 1)
+	{
+		usleep(philo->gen->t_die * 1000);
+		printf("%ld %d died \n", calctime(philo->gen), philo->nbr);
+		return ((void *)0);
+	}
+	if (philo->nbr % 2)
+	{
+		fstfork = &philo->right;
+		secfork = philo->left;
+	}
+	else
+	{
+		fstfork = philo->left;
+		secfork = &philo->right;
+	}
 	while (1)
 	{
-		if (philopickforks(philo))
-			return ((void *)0);
-		if (philosleep(philo))
-			return ((void *)0);
-		if (philothink(philo))
-			return ((void *)0);
+		philopickforks(philo, fstfork, secfork);
+		philoeat(philo, fstfork, secfork);
+		philosleep(philo);
+		philothink(philo);
 	}
 	return ((void *)0);
 }
 
+int	philopickforks(t_philo *philo, pthread_mutex_t *fstfork, pthread_mutex_t *secfork)
+{
+	pthread_mutex_lock(fstfork);
+	printf("%ld %d has taken a fork \n", calctime(philo->gen), philo->nbr);
+	pthread_mutex_lock(secfork);
+	printf("%ld %d has taken a fork \n", calctime(philo->gen), philo->nbr);
+	return (0);
+}
+
+int	philoeat(t_philo *philo, pthread_mutex_t *fstfork, pthread_mutex_t *secfork)
+{
+	philo->stat.lastmeal = calctime(philo->gen);
+	printf("%ld %d is eating \n", calctime(philo->gen), philo->nbr);
+	while (calctime(philo->gen) < philo->stat.lastmeal + philo->gen->t_eat)
+		;
+	philo->stat.ate++;
+	if (philo->gen->eat_freq && philo->stat.ate >= philo->gen->eat_freq)
+	{
+		pthread_mutex_lock(philo->satisfied);
+		philo->stat.satisfied = 1;
+		pthread_mutex_unlock(philo->satisfied);
+	}
+	pthread_mutex_unlock(fstfork);
+	pthread_mutex_unlock(secfork);
+	return (0);
+}
+
 int	philosleep(t_philo *philo)
 {
-	double	lastsleep;
-
-	lastsleep = calctime(philo->gen);
-	if (protected_printing("%s%ld %d is sleeping 🛌\n%s", philo))
-		return (1);
-	while (calctime(philo->gen) < lastsleep + philo->gen->t_sleep)
+	philo->stat.lastsleep = calctime(philo->gen);
+	printf("%ld %d is sleeping \n", calctime(philo->gen), philo->nbr);
+	while (calctime(philo->gen) < philo->stat.lastsleep + philo->gen->t_sleep)
 		;
 	return (0);
 }
 
 int	philothink(t_philo *philo)
 {
-	if (protected_printing("%s%ld %d is thinking 🤔\n%s", philo) == EXIT_FAILURE)
-		return (1);
+	printf("%ld %d is thinking \n", (calctime(philo->gen)), philo->nbr);
+	if (philo->gen->philonbr % 2 && calctime(philo->gen) + philo->gen->t_eat > philo->gen->t_die)
+	{
+		while (calctime(philo->gen) < philo->stat.lastmeal + philo->gen->t_die)
+			;
+		printf("%ld %d died \n", calctime(philo->gen), philo->nbr);
+	}
 	return (0);
-}
-
-int	protected_printing(const char *str, t_philo *philo)
-{
-	pthread_mutex_lock(philo->finishsim);
-	if (!philo->gen->endlife)
-	{
-		printf(str, philo->clr, (long)(calctime(philo->gen)), philo->nbr, RESET_COLOR);
-		pthread_mutex_unlock(philo->finishsim);
-		return (0);
-	}
-	else
-	{
-		pthread_mutex_unlock(philo->finishsim);
-		return (1);
-	}
-}
-
-int	starve(t_philo *philo)
-{
-	death_bed(philo);
-	return (1);
 }
