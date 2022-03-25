@@ -24,10 +24,10 @@ SRCS := philo.c \
 		life/forks.c \
 		life/monitor.c \
 		life/finish_sim.c \
-		utils/utils.c \
-		utils/utils2.c \
-		utils/utils3.c \
-		utils/mutex_create.c \
+		utils/sim_utils.c \
+		utils/input_utils.c \
+		utils/gen_utils.c \
+		utils/mutex_create_destroy.c \
 		utils/mutex_ops.c
 OBJS := $(SRCS:.c=.o)
 

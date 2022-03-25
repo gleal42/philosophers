@@ -6,27 +6,19 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:16:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/25 01:03:18 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 16:57:36 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "life.h"
 
-//printf("%ld %ld YOOOOOOOOO\n" ,(long)calctime(philo->gen) ,(long)philo->gen->t_die);
-
 void	*philolife(t_philo *philo)
 {
-/*	t_philo *philo;
 	pthread_mutex_t	*fstfork;
 	pthread_mutex_t	*secfork;
 
-	philo = (t_philo *)ptr;
 	if (philo->gen->philonbr == 1)
-	{
-		usleep(philo->gen->t_die * 1000);
-		printf("%ld %d died \n", calctime(philo->gen), philo->nbr);
-		return ((void *)0);
-	}
+		return (starve(philo));
 	if (philo->nbr % 2)
 	{
 		fstfork = &philo->right;
@@ -36,18 +28,30 @@ void	*philolife(t_philo *philo)
 	{
 		fstfork = philo->left;
 		secfork = &philo->right;
-	}*/
-	if (philo->nbr % 2 == 0)
-		usleep(philo->gen->t_eat * 1000);
+	}
 	while (1)
 	{
-		if (philopickforks(philo))
+		if (philopickforks(philo, fstfork, secfork))
 			return ((void *)0);
 		if (philosleep(philo))
 			return ((void *)0);
 		if (philothink(philo))
 			return ((void *)0);
 	}
+	return ((void *)0);
+}
+//printf("%ld YOOOOOOOOO\n" ,(long)calctime(philo->gen));
+
+void	*starve(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->right);
+	if (protected_printing("%s%ld %d has taken a fork 🔱\n%s", philo))
+	{
+		pthread_mutex_unlock(&philo->right);
+		return ((void *)0);
+	}
+	pthread_mutex_unlock(&philo->right);
+	death_bed(philo);
 	return ((void *)0);
 }
 
@@ -75,7 +79,8 @@ int	protected_printing(const char *str, t_philo *philo)
 	pthread_mutex_lock(philo->finishsim);
 	if (!philo->gen->endlife)
 	{
-		printf(str, philo->clr, (long)(calctime(philo->gen)), philo->nbr, RESET_COLOR);
+		printf(str, philo->clr,
+			(long)(calctime(philo->gen)), philo->nbr, RESET);
 		pthread_mutex_unlock(philo->finishsim);
 		return (0);
 	}
@@ -84,10 +89,4 @@ int	protected_printing(const char *str, t_philo *philo)
 		pthread_mutex_unlock(philo->finishsim);
 		return (1);
 	}
-}
-
-int	starve(t_philo *philo)
-{
-	death_bed(philo);
-	return (1);
 }

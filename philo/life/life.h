@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/08 16:53:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 19:41:08 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 16:58:07 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,16 @@ int		protected_printing(const char *str, t_philo *philo);
 
 //forks.c
 
-int		philopickforks(t_philo *philo);
-int		try_pick_first_fork(t_philo *philo);
-int		try_pick_second_fork(t_philo *philo);
+int		philopickforks(t_philo *philo,
+			pthread_mutex_t *right, pthread_mutex_t *left);
+int		try_pick_first_fork(t_philo *philo, pthread_mutex_t *fstfork);
+int		try_pick_second_fork(t_philo *philo,
+			pthread_mutex_t *fstfork, pthread_mutex_t *secfork);
 
 //eating.c
 
 int		philoeat(t_philo *philo, pthread_mutex_t *right, pthread_mutex_t *left);
-int		starve(t_philo *philo);
+void	*starve(t_philo *philo);
 
 //monitor.c
 

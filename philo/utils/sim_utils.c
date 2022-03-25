@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 18:21:52 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 17:09:25 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,19 @@ int	is_inbetween_time(double min, double val, double max)
 		return (1);
 	else
 		return (0);
+}
+
+char	*set_color(int clr)
+{
+	t_colors	newcolor;
+
+	newcolor = clr % 4;
+	if (newcolor == lred)
+		return (LRED);
+	else if (newcolor == lgrn)
+		return (LGRN);
+	else if (newcolor == yel)
+		return (YEL);
+	else
+		return (LBLU);
 }

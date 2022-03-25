@@ -6,16 +6,17 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 17:06:20 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 18:04:07 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 17:00:00 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	leave_forks_on_the_table(pthread_mutex_t *right, pthread_mutex_t *left)
+void	leave_forks_on_the_table(pthread_mutex_t *fstfork,
+		pthread_mutex_t *secfork)
 {
-	pthread_mutex_unlock(right);
-	pthread_mutex_unlock(left);
+	pthread_mutex_unlock(fstfork);
+	pthread_mutex_unlock(secfork);
 }
 
 int	is_dead(t_philo *philo)

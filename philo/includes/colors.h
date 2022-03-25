@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:14:15 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/15 14:43:01 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 16:51:41 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # define LGRN	"\e[1;32m"
 # define YEL   "\e[1;33m"
 # define LBLU   "\e[1;34m"
-# define RESET_COLOR "\e[m"
+# define WHITE  "\e[0;97m"
+# define RESET "\e[m"
 
 typedef enum c_colors{
 	lred,
