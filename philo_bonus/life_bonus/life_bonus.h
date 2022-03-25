@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:12:11 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 17:01:35 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 20:18:04 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		philopickforks(t_philo *philo);
 int		philoeat(t_philo *philo);
 int		philosleep(t_philo *philo);
 int		philothink(t_philo *philo);
-int		philokill(t_philo *philo);
+
 
 //prepare_life.c
 
@@ -31,9 +31,11 @@ int		prepare_semaphores(t_all *all);
 
 //finish_sim.c
 
+void	monitor_own_death(t_philo *philo);
 void	*check_ate(t_all *all);
 void	checkdeathsetminate(t_all *all);
-void	finish_sim(t_all *all);
+void	monitor_death(t_philo *philo);
+void	monitor_finish_sim(t_philo *philo);
 
 //forks.c
 

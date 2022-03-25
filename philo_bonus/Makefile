@@ -23,8 +23,8 @@ SRCS := philo_bonus.c \
 		life_bonus/eating_bonus.c \
 		life_bonus/prepare_life_bonus.c \
 		utils_bonus/utils_bonus.c \
-		utils_bonus/utils2_bonus.c \
-		utils_bonus/utils3_bonus.c
+		utils_bonus/input_utils_bonus.c \
+		utils_bonus/gen_utils_bonus.c
 OBJS := $(SRCS:.c=.o)
 
 all: $(NAME)

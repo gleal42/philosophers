@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:52:24 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 17:08:58 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 20:42:34 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ int	prepare_semaphores(t_all *all)
 	all->philo.sm.str[1] = "forkpile";
 	all->philo.sm.str[2] = "carefulprint";
 	all->philo.sm.str[3] = "finishsim";
-	all->philo.sm.sem_val[0] = 0;
-	all->philo.sm.sem_val[1] = all->gen.philonbr;
-	all->philo.sm.sem_val[2] = 1;
-	all->philo.sm.sem_val[3] = 0;
+	all->philo.sm.start_val[0] = 0;
+	all->philo.sm.start_val[1] = all->gen.philonbr;
+	all->philo.sm.start_val[2] = 1;
+	all->philo.sm.start_val[3] = 0;
 	i = 0;
 	while (i < 4)
 	{
 		if (create_semaphore(all->philo.sm.str[i], &all->philo.sm.sms[i],
-				all->philo.sm.sem_val[i]) == SEM_FAILED)
+				all->philo.sm.start_val[i]) == SEM_FAILED)
 			return (error_semaphore(&all->philo.sm, i));
 		i++;
 	}
