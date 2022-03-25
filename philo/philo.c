@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 00:29:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 17:08:33 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 17:20:55 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,23 @@ int	philosophers(int argc, char **argv)
 		return (1);
 	check_finish_loop(&all);
 	finish_sim(&all);
+	return (0);
+}
+
+int	finish_sim(t_all *all)
+{
+	int	i;
+
+	i = -1;
+	while (++i < all->gen.philonbr)
+		pthread_join(all->philos[i].philo, NULL);
+	i = -1;
+	while (++i < all->gen.philonbr)
+		pthread_mutex_destroy(&all->philos[i].right);
+		i++;
+	pthread_mutex_destroy(&all->satisfied);
+	pthread_mutex_destroy(&all->finishsim);
+	pthread_mutex_destroy(&all->lastmeal);
+	free(all->philos);
 	return (0);
 }

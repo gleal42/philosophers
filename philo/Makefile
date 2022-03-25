@@ -23,7 +23,6 @@ SRCS := philo.c \
 		life/init_sim.c \
 		life/forks.c \
 		life/monitor.c \
-		life/finish_sim.c \
 		utils/sim_utils.c \
 		utils/input_utils.c \
 		utils/gen_utils.c \

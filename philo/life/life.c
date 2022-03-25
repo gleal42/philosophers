@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:16:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/25 16:57:36 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/25 17:20:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	*philolife(t_philo *philo)
 	}
 	return ((void *)0);
 }
-//printf("%ld YOOOOOOOOO\n" ,(long)calctime(philo->gen));
 
 void	*starve(t_philo *philo)
 {
