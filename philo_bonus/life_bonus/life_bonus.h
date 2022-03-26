@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:12:11 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/25 20:18:04 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/26 18:17:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int		philopickforks(t_philo *philo);
 int		philoeat(t_philo *philo);
 int		philosleep(t_philo *philo);
 int		philothink(t_philo *philo);
-
 
 //prepare_life.c
 

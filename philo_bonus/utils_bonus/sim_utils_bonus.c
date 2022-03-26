@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/26 16:27:03 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/26 18:18:15 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	is_inbetween_time(double min, double val, double max)
 		return (0);
 }
 
+//printf("%ld %d yooo philo 🏆\n", (long)calctime(philo->gen), philo->nbr);
 int	careful_print(const char *str, t_philo *philo)
 {
 	sem_wait(philo->sm.carefulprinting);
@@ -37,6 +38,8 @@ int	careful_print(const char *str, t_philo *philo)
 		pthread_mutex_unlock(&philo->isdone);
 		pthread_mutex_destroy(&philo->lastmealtime);
 		pthread_mutex_destroy(&philo->isdone);
+		pthread_mutex_destroy(&philo->forksheldcheck);
+		sem_post(philo->sm.carefulprinting);
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->isdone);

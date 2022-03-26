@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:05:01 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/26 16:10:20 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/26 18:13:33 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,18 @@
 int	philopickforks(t_philo *philo)
 {
 	sem_wait(philo->sm.forkpile);
+	pthread_mutex_lock(&philo->forksheldcheck);
+	philo->stat.forks_held++;
+	pthread_mutex_unlock(&philo->forksheldcheck);
 	if (careful_print("%s%ld %d has taken a fork\n%s", philo))
 	{
 		sem_post(philo->sm.forkpile);
 		return (1);
 	}
 	sem_wait(philo->sm.forkpile);
+	pthread_mutex_lock(&philo->forksheldcheck);
+	philo->stat.forks_held++;
+	pthread_mutex_unlock(&philo->forksheldcheck);
 	if (careful_print("%s%ld %d has taken a fork\n%s", philo))
 	{
 		sem_post(philo->sm.forkpile);
@@ -32,10 +38,12 @@ int	philopickforks(t_philo *philo)
 
 int	starve(t_philo *philo)
 {
-	regular_print("%s%ld %d died\n%s", philo);
+	sem_wait(philo->sm.forkpile);
+	regular_print("%s%ld %d has taken a fork\n%s", philo);
 	while (calctime(philo->gen) < philo->stat.lastmeal + philo->gen->t_die)
-		 ;
-	exit(philo->nbr-1);
+		;
+	regular_print("%s%ld %d died\n%s", philo);
+	exit(philo->nbr - 1);
 }
 
 int	philoeat(t_philo *philo)
@@ -54,5 +62,8 @@ int	philoeat(t_philo *philo)
 		sem_post(philo->sm.satisfied);
 	sem_post(philo->sm.forkpile);
 	sem_post(philo->sm.forkpile);
+	pthread_mutex_lock(&philo->forksheldcheck);
+	philo->stat.forks_held = 0;
+	pthread_mutex_unlock(&philo->forksheldcheck);
 	return (0);
 }

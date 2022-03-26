@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:10:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/26 15:49:32 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/26 17:18:01 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_stat
 	double		lastmeal;
 	int			ate;
 	int			died;
+	int			forks_held;
 }			t_stat;
 
 typedef struct s_gen
@@ -57,6 +58,7 @@ typedef struct s_philo
 	pthread_t			mon_finish_sim;
 	pthread_mutex_t		lastmealtime;
 	pthread_mutex_t		isdone;
+	pthread_mutex_t		forksheldcheck;
 }			t_philo;
 
 typedef struct s_all

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:13:49 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/26 15:45:19 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/26 18:28:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,11 @@ int		ft_strlen(char *str);
 long	ft_atol(const char *str);
 int		ft_isdigit(int c);
 void	ft_putstr_fd(const char *str, int n);
+
+void	unlock_finish_simulation(t_all *all);
+void	waitremainphilo(t_all *all, int *philoindex);
+void	unlock_carefulprinting(t_all *all);
+void	unlock_satisfied(t_all *all);
+void	philo_drop_forks(t_philo *philo);
 
 #endif

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/21 15:47:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/26 16:15:53y gleal            ###   ########.fr       */
+/*   Created: 2022/03/26 18:12:13 by gleal             #+#    #+#             */
+/*   Updated: 2022/03/26 18:30:41 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	philosophers(int argc, char **argv)
 	}
 	finishsim(&all);
 }
-
 
 void	create_philos(t_philo *philo)
 {
@@ -80,60 +79,32 @@ void	*check_ate(t_all *all)
 	if (all->deadfinish)
 	{
 		pthread_mutex_unlock(&all->finishtype);
-		return (void *)0;
+		return ((void *)0);
 	}
 	printf("%s%ld all philosophers ate %d times 🏆\n%s", WHITE,
 		(long)calctime(&all->gen), all->gen.eat_freq, RESET);
 	pthread_mutex_unlock(&all->finishtype);
-	i = 0;
-	while (i < all->gen.philonbr)
-	{
-		sem_post(all->philo.sm.finishsim);
-		i++;
-	}
+	unlock_finish_simulation(all);
 	sem_post(all->philo.sm.carefulprinting);
 	return ((void *)0);
 }
 
 void	finishsim(t_all *all)
 {
-	int		i;
 	int		philoindex;
 
 	waitpid(-1, &philoindex, 0);
-	i = 0;
-	while (i < all->gen.philonbr)
-	{
-		sem_post(all->philo.sm.finishsim);
-		i++;
-	}
-	while (i < all->philo.gen->philonbr)
-	{
-		if (i == philoindex)
-			i++;
-		waitpid(all->philo.proc[i], &philoindex, 0);
-		i++;
-	}
 	pthread_mutex_lock(&all->finishtype);
 	all->deadfinish = 1;
 	pthread_mutex_unlock(&all->finishtype);
-	i = 0;
-	while (i < all->gen.philonbr)
-	{
-		sem_post(all->philo.sm.satisfied);
-		i++;
-	}
+	unlock_finish_simulation(all);
+	unlock_carefulprinting(all);
+	waitremainphilo(all, &philoindex);
+	unlock_satisfied(all);
 	sem_unlink("satisfied");
 	sem_close(all->philo.sm.satisfied);
 	sem_unlink("forkpile");
 	sem_close(all->philo.sm.forkpile);
-	i = 0;
-	while (i <= all->gen.philonbr)
-	{
-		sem_post(all->philo.sm.carefulprinting);
-		i++;
-	}
-	//printf("%ld yooo 🏆\n", (long)calctime(&all->gen));
 	sem_unlink("carefulprinting");
 	sem_close(all->philo.sm.carefulprinting);
 	sem_unlink("finishsim");
