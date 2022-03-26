@@ -19,13 +19,14 @@ INCLUDE_DIRS := includes_bonus \
 INCLUDES := $(addprefix -I, $(INCLUDE_DIRS))
 NAME := philo_bonus
 SRCS := philo_bonus.c \
-		life_bonus/life_bonus.c \
 		life_bonus/eating_bonus.c \
-		life_bonus/prepare_life_bonus.c \
-		utils_bonus/sim_utils_bonus.c \
+		life_bonus/init_bonus.c \
+		life_bonus/life_bonus.c \
 		utils_bonus/finishsim_bonus.c \
+		utils_bonus/gen_utils_bonus.c \
+		utils_bonus/init_utils_bonus.c \
 		utils_bonus/input_utils_bonus.c \
-		utils_bonus/gen_utils_bonus.c
+		utils_bonus/sim_utils_bonus.c
 OBJS := $(SRCS:.c=.o)
 
 all: $(NAME)

@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:12:11 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/26 18:17:14 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/26 19:02:24 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int		initlife(int argc, char **argv, t_all *philo);
 sem_t	*create_semaphore(const char *str, sem_t **semph, int start_value);
 int		error_semaphore(t_semphs *sm, int nbr);
 int		prepare_semaphores(t_all *all);
+int		error_mutex(t_philo *philo, char *str);
 
 //finish_sim.c
 

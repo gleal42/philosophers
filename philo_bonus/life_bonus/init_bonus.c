@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prepare_life_bonus.c                               :+:      :+:    :+:   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/21 15:52:24 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/25 20:42:34 by gleal            ###   ########.fr       */
+/*   Created: 2022/03/26 19:17:45 by gleal             #+#    #+#             */
+/*   Updated: 2022/03/26 19:18:46 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	prepare_semaphores(t_all *all)
 	{
 		if (create_semaphore(all->philo.sm.str[i], &all->philo.sm.sms[i],
 				all->philo.sm.start_val[i]) == SEM_FAILED)
-			return (error_semaphore(&all->philo.sm, i));
+			return (error_semaphore(&all->philo.sm, i - 1));
 		i++;
 	}
 	all->philo.sm.satisfied = all->philo.sm.sms[0];
@@ -56,28 +56,4 @@ int	prepare_semaphores(t_all *all)
 	all->philo.sm.carefulprinting = all->philo.sm.sms[2];
 	all->philo.sm.finishsim = all->philo.sm.sms[3];
 	return (0);
-}
-
-sem_t	*create_semaphore(const char *str, sem_t **semph, int start_value)
-{
-	sem_unlink(str);
-	*semph = sem_open(str, O_CREAT, 0660, start_value);
-	return (*semph);
-}
-
-int	error_semaphore(t_semphs *sm, int nbr)
-{
-	int	i;
-
-	ft_putstr_fd("Error creating semaphore ", 2);
-	ft_putstr_fd(sm->str[nbr], 2);
-	ft_putstr_fd("\n", 2);
-	i = 0;
-	while (i <= nbr)
-	{
-		sem_unlink(sm->str[i]);
-		sem_close(sm->sms[i]);
-		i++;
-	}
-	return (EXIT_FAILURE);
 }

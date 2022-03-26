@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/26 18:12:13 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/26 18:30:41 by gleal            ###   ########.fr       */
+/*   Created: 2022/03/26 19:13:51 by gleal             #+#    #+#             */
+/*   Updated: 2022/03/26 19:13:52 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,11 @@ void	philosophers(int argc, char **argv)
 	all.philo.gen = &all.gen;
 	memset((void *)&all.philo.stat, 0, sizeof(all.philo.stat));
 	create_philos(&all.philo);
-	pthread_mutex_init(&all.finishtype, NULL);
+	if (pthread_mutex_init(&all.finishtype, NULL))
+	{
+		error_mutex(&all.philo, "finishtype");
+		return ;
+	}
 	all.deadfinish = 0;
 	if (argc == 6)
 	{
@@ -97,9 +101,12 @@ void	finishsim(t_all *all)
 	pthread_mutex_lock(&all->finishtype);
 	all->deadfinish = 1;
 	pthread_mutex_unlock(&all->finishtype);
-	unlock_finish_simulation(all);
-	unlock_carefulprinting(all);
-	waitremainphilo(all, &philoindex);
+	if (philoindex != -1)
+	{
+		unlock_finish_simulation(all);
+		unlock_carefulprinting(all);
+		waitremainphilo(all, &philoindex);
+	}
 	unlock_satisfied(all);
 	sem_unlink("satisfied");
 	sem_close(all->philo.sm.satisfied);

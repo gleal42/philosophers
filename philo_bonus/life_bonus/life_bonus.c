@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:16:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/26 18:31:10 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/26 19:17:09 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@ int	philolife(t_philo *philo)
 {
 	if (philo->gen->philonbr == 1)
 		return (starve(philo));
-	pthread_mutex_init(&philo->lastmealtime, NULL);
-	pthread_mutex_init(&philo->isdone, NULL);
-	pthread_mutex_init(&philo->forksheldcheck, NULL);
+	if (create_philo_mutexes(philo) == EXIT_FAILURE)
+		return (-1);
 	pthread_create(&philo->mon_finish_sim, NULL,
 		(void *)monitor_own_death, philo);
 	pthread_detach(philo->mon_finish_sim);
@@ -37,14 +36,12 @@ int	philolife(t_philo *philo)
 	exit (0);
 }
 
-//printf("%ld %d yooo philo 🏆\n", (long)calctime(philo->gen), philo->nbr);
-
 int	philosleep(t_philo *philo)
 {
 	double	lastsleep;
 
 	lastsleep = calctime(philo->gen);
-	if (careful_print("%s%ld %d is sleeping\n%s", philo))
+	if (careful_print("%s%ld %d is sleeping 🛌\n%s", philo))
 		return (1);
 	while (calctime(philo->gen) < lastsleep + philo->gen->t_sleep)
 		;
@@ -53,7 +50,7 @@ int	philosleep(t_philo *philo)
 
 int	philothink(t_philo *philo)
 {
-	if (careful_print("%s%ld %d is thinking\n%s", philo))
+	if (careful_print("%s%ld %d is thinking 🤔\n%s", philo))
 		return (1);
 	return (0);
 }
@@ -74,7 +71,7 @@ void	monitor_own_death(t_philo *philo)
 				return ;
 			}
 			pthread_mutex_unlock(&philo->isdone);
-			regular_print("%s%ld %d died\n%s", philo);
+			regular_print("%s%ld %d died 💀\n%s", philo);
 			philo_drop_forks(philo);
 			pthread_mutex_destroy(&philo->lastmealtime);
 			pthread_mutex_destroy(&philo->isdone);
@@ -85,8 +82,6 @@ void	monitor_own_death(t_philo *philo)
 		pthread_mutex_unlock(&philo->lastmealtime);
 	}
 }
-
-//printf("%ld %d yooo philo 🏆\n", (long)calctime(philo->gen), philo->nbr);
 
 void	monitor_finish_sim(t_philo *philo)
 {
