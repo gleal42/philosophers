@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 17:05:01 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/25 21:54:01 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/26 16:10:20 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,38 @@
 int	philopickforks(t_philo *philo)
 {
 	sem_wait(philo->sm.forkpile);
-	careful_print("%s%ld %d has taken a fork\n%s", philo);
-	if (philo->gen->philonbr == 1)
-		return (starve(philo));
+	if (careful_print("%s%ld %d has taken a fork\n%s", philo))
+	{
+		sem_post(philo->sm.forkpile);
+		return (1);
+	}
 	sem_wait(philo->sm.forkpile);
-	careful_print("%s%ld %d has taken a fork\n%s", philo);
+	if (careful_print("%s%ld %d has taken a fork\n%s", philo))
+	{
+		sem_post(philo->sm.forkpile);
+		sem_post(philo->sm.forkpile);
+		return (1);
+	}
 	return (philoeat(philo));
 }
 
 int	starve(t_philo *philo)
 {
-	sem_post(philo->sm.forkpile);
 	regular_print("%s%ld %d died\n%s", philo);
-	return (1);
+	while (calctime(philo->gen) < philo->stat.lastmeal + philo->gen->t_die)
+		 ;
+	exit(philo->nbr-1);
 }
 
 int	philoeat(t_philo *philo)
 {
 	philo->stat.lastmeal = calctime(philo->gen);
-	careful_print("%s%ld %d is eating\n%s", philo);
-	if (eating(philo))
+	if (careful_print("%s%ld %d is eating\n%s", philo))
+	{
+		sem_post(philo->sm.forkpile);
+		sem_post(philo->sm.forkpile);
 		return (1);
-	return (0);
-}
-
-int	eating(t_philo *philo)
-{
+	}
 	while (calctime(philo->gen) < philo->stat.lastmeal + philo->gen->t_eat)
 		;
 	philo->stat.ate++;

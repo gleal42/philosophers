@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_bonus.c                                      :+:      :+:    :+:   */
+/*   sim_utils_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/25 20:21:16 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/26 16:27:03 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,21 @@ int	is_inbetween_time(double min, double val, double max)
 		return (0);
 }
 
-void	careful_print(const char *str, t_philo *philo)
+int	careful_print(const char *str, t_philo *philo)
 {
 	sem_wait(philo->sm.carefulprinting);
+	pthread_mutex_lock(&philo->isdone);
+	if (philo->stat.died)
+	{
+		pthread_mutex_unlock(&philo->isdone);
+		pthread_mutex_destroy(&philo->lastmealtime);
+		pthread_mutex_destroy(&philo->isdone);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->isdone);
 	printf(str, philo->clr, (long)calctime(philo->gen), philo->nbr, RESET);
 	sem_post(philo->sm.carefulprinting);
+	return (0);
 }
 
 void	regular_print(const char *str, t_philo *philo)

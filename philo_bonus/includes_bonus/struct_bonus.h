@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:10:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/25 22:06:52 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/26 15:49:32 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_stat
 {
 	double		lastmeal;
 	int			ate;
+	int			died;
 }			t_stat;
 
 typedef struct s_gen
@@ -52,10 +53,10 @@ typedef struct s_philo
 	int					nbr;
 	t_semphs			sm;
 	t_stat				stat;
-	pthread_t			monitor_own_death;
-	pthread_t			monitor_finish_sim;
-	pthread_mutex_t		lastmeal_m;
-	pthread_mutex_t		checkowndeath_m;
+	pthread_t			mon_own_death;
+	pthread_t			mon_finish_sim;
+	pthread_mutex_t		lastmealtime;
+	pthread_mutex_t		isdone;
 }			t_philo;
 
 typedef struct s_all
@@ -65,7 +66,7 @@ typedef struct s_all
 	pthread_t			check_ate;
 	pthread_t			check_finish;
 	pthread_mutex_t		finishtype;
-	int					died;
+	int					deadfinish;
 }			t_all;
 
 #endif
