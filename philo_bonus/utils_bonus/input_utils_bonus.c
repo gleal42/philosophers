@@ -6,24 +6,21 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 02:32:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/27 02:32:53 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 16:32:23 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils_bonus.h"
 
-int	is_input_integer(char **stack_a_args)
+int	is_input_uint(char **stack_a_args, int argc)
 {
 	int	i;
 
 	i = 0;
-	if (!stack_a_args[0])
-		return (0);
-	while (stack_a_args[i])
+	while (i < argc - 1)
 	{
-		if (!is_integer(stack_a_args[i]))
+		if (!is_unsigned_integer(stack_a_args[i]))
 		{
-			ft_putstr_fd("Error: Input not numeric\n", 1);
 			return (0);
 		}
 		i++;
@@ -31,7 +28,7 @@ int	is_input_integer(char **stack_a_args)
 	return (1);
 }
 
-int	is_integer(char *str)
+int	is_unsigned_integer(char *str)
 {
 	char	*strg;
 
@@ -41,9 +38,15 @@ int	is_integer(char *str)
 	if (*strg == '+' || *strg == '-')
 		strg++;
 	if (!is_all_digits(strg))
+	{
+		ft_putstr_fd("Error: Input not numeric\n", 2);
 		return (0);
-	if (!is_within_lims(strg))
+	}
+	if (!is_within_lims(str))
+	{
+		ft_putstr_fd("Error: Input not within limits\n", 2);
 		return (0);
+	}
 	return (1);
 }
 
@@ -62,12 +65,12 @@ int	is_within_lims(char *strg)
 {
 	long	nbr;
 
-	if (ft_strlen(strg) > 10)
-		return (0);
+	while (*strg && *strg == '0')
+		strg++;
 	nbr = ft_atol(strg);
 	if (nbr > INT32_MAX)
 		return (0);
-	if (nbr < INT32_MIN)
+	if (nbr < 0)
 		return (0);
 	return (1);
 }
