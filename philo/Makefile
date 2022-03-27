@@ -39,7 +39,6 @@ $(NAME) : $(OBJS)
 	$(CC) $(FLAGS) $^ -o $@ $(INCLUDES)
 
 clean:
-	rm -f **/*.o
 	rm -f $(OBJS)
 
 fclean: clean

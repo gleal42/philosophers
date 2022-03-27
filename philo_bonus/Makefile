@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC := gcc
-FLAGS := -Wall -Wextra -Werror #-g -pthread -fsanitize=thread
+FLAGS := -Wall -Wextra -Werror -pthread
 INCLUDE_DIRS := includes_bonus \
 				life_bonus \
 				utils_bonus \
@@ -36,7 +36,6 @@ $(NAME) : $(OBJS)
 	$(CC) $(FLAGS) $^ -o $@ $(INCLUDES)
 
 clean:
-	rm -f **/*.o
 	rm -f $(OBJS)
 
 fclean: clean
