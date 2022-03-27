@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:52:24 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/27 16:32:58 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 16:40:27 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ int	initlife(int argc, char **argv, t_all *all)
 	if (!is_input_uint(&argv[1], argc))
 		return (1);
 	all->gen.philonbr = ft_atoi(argv[1]);
+	if (all->gen.philonbr == 0)
+	{
+		ft_putstr_fd("Error: No Philosophers\n", 2);
+		return (1);
+	}
 	all->gen.t_eat = ft_atoi(argv[3]);
 	all->gen.t_sleep = ft_atoi(argv[4]);
 	all->gen.t_die = ft_atoi(argv[2]);

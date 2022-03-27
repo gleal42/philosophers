@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 02:32:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/27 16:32:23 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 16:39:50 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ int	is_input_uint(char **stack_a_args, int argc)
 	while (i < argc - 1)
 	{
 		if (!is_unsigned_integer(stack_a_args[i]))
-		{
 			return (0);
-		}
 		i++;
 	}
 	return (1);
