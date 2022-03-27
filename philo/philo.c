@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/24 00:29:57 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/27 03:15:29 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 16:35:36 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int	main(int argc, char **argv)
 {
 	if (argc < 5)
-		printf("Forgot arguments\n");
+		ft_putstr_fd("Forgot arguments\n", 2);
 	else if (argc >= 5 && argc <= 6)
 		philosophers(argc, argv);
 	else
-		printf("Too many arguments\n");
+		ft_putstr_fd("Too many arguments\n", 2);
 }
 
 int	philosophers(int argc, char **argv)

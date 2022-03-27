@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/25 17:19:31 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/25 17:19:32 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 16:37:48 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ int	is_input_uint(char **stack_a_args, int argc)
 	while (i < argc - 1)
 	{
 		if (!is_unsigned_integer(stack_a_args[i]))
-		{
-			ft_putstr_fd("Error: Input not numeric\n", 1);
 			return (0);
-		}
 		i++;
 	}
 	return (1);
@@ -39,9 +36,15 @@ int	is_unsigned_integer(char *str)
 	if (*strg == '+' || *strg == '-')
 		strg++;
 	if (!is_all_digits(strg))
+	{
+		ft_putstr_fd("Error: Input not numeric\n", 2);
 		return (0);
+	}
 	if (!is_within_lims(str))
+	{
+		ft_putstr_fd("Error: Input not within limits\n", 2);
 		return (0);
+	}
 	return (1);
 }
 

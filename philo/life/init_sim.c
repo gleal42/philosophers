@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:31:25 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/24 17:55:39 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 16:38:48 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ int	initlife(int argc, char **argv, t_all *all)
 		return (1);
 	all->gen.philonbr = ft_atoi(argv[1]);
 	if (all->gen.philonbr == 0)
+	{
+		ft_putstr_fd("Error: No Philosophers\n", 2);
 		return (1);
+	}
 	all->gen.t_eat = ft_atoi(argv[3]);
 	all->gen.t_sleep = ft_atoi(argv[4]);
 	all->gen.t_die = ft_atoi(argv[2]);
@@ -27,7 +30,10 @@ int	initlife(int argc, char **argv, t_all *all)
 	{
 		all->gen.eat_freq = ft_atoi(argv[5]);
 		if (all->gen.eat_freq == 0)
+		{
+			ft_putstr_fd("Error: Philosophers satisfied before sim starts\n", 2);
 			return (1);
+		}
 	}
 	else
 		all->gen.eat_freq = 0;
