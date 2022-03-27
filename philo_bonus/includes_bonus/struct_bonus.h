@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:10:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 18:42:59 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/26 23:41:59 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct s_philo
 	double				act;
 	double				lastmeal;
 	int					ate;
+	pthread_t			monitor_dead;
+	pthread_mutex_t		lastmealcheck;
 }			t_philo;
 
 typedef struct s_all

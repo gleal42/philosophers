@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC := gcc
-FLAGS := -Wall -Wextra -Werror -pthread
+FLAGS := -Wall -Wextra -Werror #-g -pthread -fsanitize=thread
 INCLUDE_DIRS := includes_bonus \
 				life_bonus \
 				utils_bonus \

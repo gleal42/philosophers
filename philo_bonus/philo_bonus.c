@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:47:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/22 18:23:33 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 00:09:41 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	philosophers(int argc, char **argv)
 
 	if (initlife(argc, argv, &all) != EXIT_SUCCESS)
 		return ;
-	all.gen.tstlife = calctime();
+	all.gen.tstlife = 0;
+	all.gen.tstlife = calctime(&all.gen);
 	all.philo.gen = &all.gen;
 	create_philos(&all.philo);
 	i = 0;
