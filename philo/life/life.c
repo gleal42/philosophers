@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:16:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/25 17:20:09 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 03:52:14 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,13 @@
 
 void	*philolife(t_philo *philo)
 {
-	pthread_mutex_t	*fstfork;
-	pthread_mutex_t	*secfork;
-
 	if (philo->gen->philonbr == 1)
 		return (starve(philo));
 	if (philo->nbr % 2)
-	{
-		fstfork = &philo->right;
-		secfork = philo->left;
-	}
-	else
-	{
-		fstfork = philo->left;
-		secfork = &philo->right;
-	}
+		usleep(philo->gen->t_eat * 1000);
 	while (1)
 	{
-		if (philopickforks(philo, fstfork, secfork))
+		if (philopickforks(philo))
 			return ((void *)0);
 		if (philosleep(philo))
 			return ((void *)0);

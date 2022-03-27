@@ -6,20 +6,19 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/15 17:08:14 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/25 16:56:34 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 03:47:15 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "life.h"
 
-int	philopickforks(t_philo *philo,
-	pthread_mutex_t *fstfork, pthread_mutex_t *secfork)
+int	philopickforks(t_philo *philo)
 {
-	if (try_pick_first_fork(philo, fstfork) != 0)
+	if (try_pick_first_fork(philo, &philo->right) != 0)
 		return (1);
-	if (try_pick_second_fork(philo, fstfork, secfork) != 0)
+	if (try_pick_second_fork(philo, &philo->right, philo->left) != 0)
 		return (1);
-	if (philoeat(philo, fstfork, secfork))
+	if (philoeat(philo, &philo->right, philo->left))
 		return (1);
 	return (0);
 }
