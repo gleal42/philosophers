@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 18:16:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/27 00:16:29 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 02:27:37 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	philosleep(t_philo *philo)
 	double	lastsleep;
 
 	lastsleep = calctime(philo->gen);
-	careful_print("%s%ld %d is sleeping\n%s", philo);
+	careful_print("%s%ld %d is sleeping 🛌\n%s", philo);
 	while (philo->act <= lastsleep + philo->gen->t_sleep)
 	{
 		philo->act = calctime(philo->gen);
@@ -49,7 +49,7 @@ int	philosleep(t_philo *philo)
 
 int	philothink(t_philo *philo)
 {
-	careful_print("%s%ld %d is thinking\n%s", philo);
+	careful_print("%s%ld %d is thinking 🤔\n%s", philo);
 	return (0);
 }
 
@@ -62,7 +62,7 @@ int	philokill(t_philo *philo)
 		{
 			pthread_mutex_unlock(&philo->lastmealcheck);
 			sem_wait(philo->sm.carefulprinting);
-			regular_print("%s%ld %d died\n%s", philo);
+			regular_print("%s%ld %d died 💀\n%s", philo);
 			sem_post(philo->sm.finishsim);
 			return (1);
 		}

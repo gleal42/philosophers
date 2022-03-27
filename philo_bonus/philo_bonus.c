@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:47:28 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/27 00:09:41 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 02:39:45 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int	main(int argc, char **argv)
 {
 	if (argc < 5)
-		printf("Forgot arguments\n");
+		ft_putstr_fd("Forgot arguments\n", 2);
 	else if (argc >= 5 && argc <= 6)
 		philosophers(argc, argv);
 	else
-		printf("Too many arguments\n");
+		ft_putstr_fd("Too many arguments\n", 2);
 }
 
 void	philosophers(int argc, char **argv)
@@ -51,27 +51,6 @@ void	philosophers(int argc, char **argv)
 	}
 }
 
-void	create_philos(t_philo *philo)
-{
-	int	i;
-
-	i = 0;
-	while (i < philo->gen->philonbr)
-	{
-		philo->proc[i] = fork();
-		philo->nbr = i + 1;
-		philo->clr = set_color(i);
-		if (philo->proc[i] < 0)
-		{
-			printf("There was an error creating philosopher process\n");
-			return ;
-		}
-		if (philo->proc[i] == 0)
-			exit(philolife(philo));
-		i++;
-	}
-}
-
 void	*check_ate(t_all *all)
 {
 	int	i;
@@ -86,18 +65,12 @@ void	*check_ate(t_all *all)
 			pthread_mutex_unlock(&all->finishtype);
 			return ((void *)0);
 		}
-		i++;
 		pthread_mutex_unlock(&all->finishtype);
+		i++;
 	}
 	sem_wait(all->philo.sm.carefulprinting);
-	pthread_mutex_lock(&all->finishtype);
-	if (all->starve)
-	{
-		pthread_mutex_unlock(&all->finishtype);
-		return ((void *)0);
-	}
-	sem_post(all->philo.sm.finishsim);
-	pthread_mutex_unlock(&all->finishtype);
+	if (print_satisfied_message(all))
+		return ((void *)1);
 	return ((void *)0);
 }
 

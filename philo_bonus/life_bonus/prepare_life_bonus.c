@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 15:52:24 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/21 17:08:58 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 02:39:53 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,25 @@ int	error_semaphore(t_semphs *sm, int nbr)
 		i++;
 	}
 	return (EXIT_FAILURE);
+}
+
+void	create_philos(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->gen->philonbr)
+	{
+		philo->proc[i] = fork();
+		philo->nbr = i + 1;
+		philo->clr = set_color(i);
+		if (philo->proc[i] < 0)
+		{
+			printf("There was an error creating philosopher process\n");
+			return ;
+		}
+		if (philo->proc[i] == 0)
+			exit(philolife(philo));
+		i++;
+	}
 }

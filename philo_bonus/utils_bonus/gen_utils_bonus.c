@@ -1,16 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_bonus.c                                      :+:      :+:    :+:   */
+/*   gen_utils_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/07 22:05:08 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/27 00:08:54 by gleal            ###   ########.fr       */
+/*   Created: 2022/03/27 02:33:27 by gleal             #+#    #+#             */
+/*   Updated: 2022/03/27 02:33:29 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils_bonus.h"
+
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+		i++;
+	return (i);
+}
 
 int	ft_atoi(const char *str)
 {
@@ -36,32 +48,48 @@ int	ft_atoi(const char *str)
 	return (nbr * sign);
 }
 
-double	calctime(const t_gen *gen)
+long	ft_atol(const char *str)
 {
-	struct timeval	time;
+	int		sign;
+	long	number;
 
-	gettimeofday(&time, NULL);
-	return ((double)(time.tv_sec * 1000 + time.tv_usec / 1000 - gen->tstlife));
+	sign = 1;
+	number = 0;
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '+')
+		str++;
+	else if (*str == '-')
+	{
+		sign *= -1;
+		str++;
+	}
+	while (*str >= '0' && *str <= '9')
+	{
+		number = number * 10 + *str - '0';
+		str++;
+	}
+	return (number * sign);
 }
 
-int	is_inbetween_time(double min, double val, double max)
+int	ft_isdigit(int c)
 {
-	if (min <= val && val <= max)
+	if (c >= '0' && c <= '9')
 		return (1);
 	else
 		return (0);
 }
 
-void	careful_print(const char *str, t_philo *philo)
+void	ft_putstr_fd(const char *str, int n)
 {
-	if (philo->ate >= philo->gen->eat_freq)
-		usleep(20);
-	sem_wait(philo->sm.carefulprinting);
-	printf(str, philo->clr, (long)calctime(philo->gen), philo->nbr, RESET_COLOR);
-	sem_post(philo->sm.carefulprinting);
-}
+	char	c;
 
-void	regular_print(const char *str, t_philo *philo)
-{
-	printf(str, philo->clr, (long)calctime(philo->gen), philo->nbr, RESET_COLOR);
+	if (!str)
+		return ;
+	while (*str)
+	{
+		c = *str;
+		write(n, &c, 1);
+		str++;
+	}
 }
