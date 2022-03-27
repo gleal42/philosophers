@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 02:32:45 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/27 16:39:50 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 16:47:33 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,20 @@ int	is_within_lims(char *strg)
 		return (0);
 	if (nbr < 0)
 		return (0);
+	return (1);
+}
+
+int	is_valid_nbr_philosophers(t_all *all)
+{
+	if (all->gen.philonbr == 0)
+	{	
+		ft_putstr_fd("Error: No Philosophers\n", 2);
+		return (0);
+	}
+	if (all->gen.philonbr > 10000)
+	{
+		ft_putstr_fd("Error: Too many Philosophers\n", 2);
+		return (0);
+	}
 	return (1);
 }

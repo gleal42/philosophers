@@ -6,7 +6,7 @@
 /*   By: gleal <gleal@student.42lisboa.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/14 22:10:34 by gleal             #+#    #+#             */
-/*   Updated: 2022/03/27 02:09:29 by gleal            ###   ########.fr       */
+/*   Updated: 2022/03/27 16:42:28 by gleal            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ typedef struct s_philo
 	t_gen const			*gen;
 	int					nbr;
 	char				*clr;
-	pid_t				proc[201];
+	pid_t				proc[10000];
 	t_semphs			sm;
 	double				act;
 	double				lastmeal;
