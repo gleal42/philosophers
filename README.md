@@ -1,9 +1,11 @@
 # philosophers
 Introduction to threads and mutexes
 
-I had a lot of problems with this project:
+With this project I learned how difficult it is to synchronize threads without having data races and how it can be difficult to coordinate both threads and processes.
 
-I will present the main issues and possible solutions, some that I tried others that I considered:
+For the Bonus I killed the processes using the sigterm signal after I trying to use the exit command and untrackable data races started occurring.
+
+Definitely a very useful project. Can't wait to use threads in other projects!
 
 ## 1 Data races
 
